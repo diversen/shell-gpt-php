@@ -3,7 +3,6 @@
 namespace Diversen\GPT;
 
 use Diversen\Cli\Utils;
-use Exception;
 
 class Base
 {
@@ -13,8 +12,8 @@ class Base
     public array $baseOptions = [
         '--model' => 'GPT-3 model name. davinci, curie, babbage, ada',
         '--max-tokens' => 'Strict length of output (words).',
-        '--temperature' => 'Temperature of output.',
-        '--top-p' => 'Top p of output.',
+        '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
+        '--top-p' => 'Top p of output. Between 0 and 1. Higher value is more random',
     ];
 
     public function __construct()

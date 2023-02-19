@@ -25,7 +25,7 @@ class Code extends Base
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
-
+        
         $params = $this->getBaseParams($parse_argv);
         $prompt = $parse_argv->getArgument(0);
         $params['prompt'] = $prompt . '. Provide only code as output.';

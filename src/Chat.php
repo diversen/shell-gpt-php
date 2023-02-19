@@ -15,7 +15,7 @@ class Chat extends Base
     public function getCommand()
     {
         return [
-            'usage' => 'Command to answer questions',
+            'usage' => 'Answer questions',
             'options' => $this->baseOptions,
             'arguments' => [
                 'Prompt' => 'The prompt to generate completions for.',
