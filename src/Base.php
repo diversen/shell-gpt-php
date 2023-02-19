@@ -3,6 +3,7 @@
 namespace Diversen\GPT;
 
 use Diversen\Cli\Utils;
+use Exception;
 
 class Base
 {
@@ -21,11 +22,16 @@ class Base
         $this->utils = new Utils();
     }
 
+    private function getKeyFile() {
+        $home = getenv("HOME");
+        $file = $home . '/.config/shell-gpt/api_key.txt';
+        return $file;
+    }
+
     private function getApiKey()
     {
 
-        $home = getenv("HOME");
-        $file = $home . '/.config/shell-gpt/api_key.txt';
+        $file = $this->getKeyFile();
         if (file_exists($file)) {
             return trim(file_get_contents($file));
         }
@@ -88,6 +94,13 @@ class Base
     {
         $result = $this->openAiRequest($params);
         $result = json_decode($result, true);
+        $error = $result["error"] ?? null;
+
+        if ($error) {
+            print($result["error"]["message"] . PHP_EOL);
+            print("You may also check existing key file: ". $this->getKeyFile() . PHP_EOL);
+            exit(1);
+        }
         $text = trim($result["choices"][0]["text"]);
         return $text;
     }
