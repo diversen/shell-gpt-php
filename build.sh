@@ -10,6 +10,7 @@ if [ -z "$latestTag" ]; then
     latestTag="main"
 fi
 
+mkdir -p releases
 composer install
 cd ..
 rm shell-gpt-php/releases/shgpt-$latestTag.phar
