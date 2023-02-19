@@ -11,6 +11,14 @@ Download a release, e.g.:
     sudo mv sgtpp-v0.0.1.phar /usr/local/bin/sgtpp
     sudo chmod +x /usr/local/bin/sgtpp
 
+You will need an API key
+
+If you don't have one you will be prompted: 
+
+    "No GPT-3 API key found. Please enter a valid API key:"
+    # -> Enter your API key
+
+
 ## Usage
 
 ### Generate a shell command: 
