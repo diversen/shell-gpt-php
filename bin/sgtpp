@@ -19,6 +19,7 @@ use Diversen\GPT\Chat;
 use Diversen\GPT\Code;
 
 $minimal_cli = new MinimalCli();
+$minimal_cli->header = "Shell GTP for PHP";
 $minimal_cli->addCommandClass('shell', Shell::class);
 $minimal_cli->addCommandClass('chat', Code::class);
 $minimal_cli->addCommandClass('code', Chat::class);
