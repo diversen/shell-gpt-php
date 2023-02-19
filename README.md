@@ -13,7 +13,7 @@ Download a release, e.g.:
 
 ## Usage
 
-Generate a shell command: 
+### Generate a shell command: 
 
     sgtpp shell "Command to search replace in files recursive in current directory"
     # -> find . -type f -exec sed -i 's/search/replace/g' {} \;
@@ -23,15 +23,15 @@ Option for executing the command (set -e flag):
     sgtpp shell "Command to search replace in files recursive in current directory" -e
     # -> Execute command: find . -type f -exec sed -i 's/search/replace/g' {} \; ? Sure you want to continue? [Y/n]
 
-Generating code:
+### Generating code:
 
     sgtpp code "Can you make a simple HTML template?" > index.html
     more index.html
 
-Human questions with the GTP:
+### Human questions with the GTP:
 
     sgtpp chat "How do you say hello in spanish?"
-    # -> Hello, how are you?
+    # -> "Hola"
 
 ## License
 
