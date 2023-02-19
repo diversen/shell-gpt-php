@@ -38,7 +38,7 @@ Add the -e flag to execute the command:
     shgpt code "Can you make a simple HTML template?" > index.html
     more index.html
 
-### Human questions with the GTP:
+### Human questions with the GPT:
 
     shgpt chat "How do you say hello in spanish?"
     # -> "Hola"
