@@ -12,7 +12,7 @@ fi
 
 composer install
 cd ..
-rm shell-gpt-php/releases/sgtpp-$latestTag.phar
-phar-composer build shell-gpt-php shell-gpt-php/releases/sgtpp-$latestTag.phar
+rm shell-gpt-php/releases/shgpt-$latestTag.phar
+phar-composer build shell-gpt-php shell-gpt-php/releases/shgpt-$latestTag.phar
 cd shell-gpt-php
-chmod +x releases/sgtpp-$latestTag.phar
+chmod +x releases/shgpt-$latestTag.phar

@@ -6,10 +6,10 @@ This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
 Download a release, e.g.: 
     
-    sgtpp-v0.0.1.phar
+    shgpt-v0.0.2.phar
 
-    sudo mv sgtpp-v0.0.1.phar /usr/local/bin/sgtpp
-    sudo chmod +x /usr/local/bin/sgtpp
+    sudo mv shgpt-v0.0.1.phar /usr/local/bin/shgpt
+    sudo chmod +x /usr/local/bin/shgpt
 
 You will need an API key
 
@@ -23,24 +23,24 @@ If you don't have one you will be prompted:
 
 ### Generate a shell command: 
 
-    sgtpp shell "Command to search replace in files recursive in current directory"
+    shgpt shell "Command to search replace in files recursive in current directory"
     # -> find . -type f -exec sed -i 's/search/replace/g' {} \;
 
 ### Execute a shell command
 
 Add the -e flag to execute the command:
 
-    sgtpp shell "Command to search replace in files recursive in current directory" -e
+    shgpt shell "Command to search replace in files recursive in current directory" -e
     # -> Execute command: find . -type f -exec sed -i 's/search/replace/g' {} \; ? Sure you want to continue? [Y/n]
 
 ### Generating code:
 
-    sgtpp code "Can you make a simple HTML template?" > index.html
+    shgpt code "Can you make a simple HTML template?" > index.html
     more index.html
 
 ### Human questions with the GTP:
 
-    sgtpp chat "How do you say hello in spanish?"
+    shgpt chat "How do you say hello in spanish?"
     # -> "Hola"
 
 ## License
