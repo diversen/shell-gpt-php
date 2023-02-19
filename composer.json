@@ -1,0 +1,24 @@
+{
+    "name": "diversen/shell-gpt-php",
+    "description": "Using the GPT engine to generate code, system commands, or chat",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Diversen\\GPT\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dennis Iversen",
+            "email": "dennis.iversen@gmail.com"
+        }
+    ],
+    "bin": [
+        "bin/sgtpp"
+    ],
+    
+    "require": {
+        "diversen/minimal-cli-framework": "^6.1"
+    }
+}
