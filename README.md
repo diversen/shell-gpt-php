@@ -2,6 +2,15 @@
 
 This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
+## Installation
+
+Download a release, e.g.: 
+    
+    sgtpp-v0.0.1.phar
+
+    sudo mv sgtpp-v0.0.1.phar /usr/local/bin/sgtpp
+    sudo chmod +x /usr/local/bin/sgtpp
+
 ## Usage
 
 Generate a shell command: 
@@ -23,3 +32,7 @@ Human questions with the GTP:
 
     sgtpp chat "How do you say hello in spanish?"
     # -> Hello, how are you?
+
+## License
+
+MIT
