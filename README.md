@@ -26,7 +26,9 @@ If you don't have one you will be prompted:
     sgtpp shell "Command to search replace in files recursive in current directory"
     # -> find . -type f -exec sed -i 's/search/replace/g' {} \;
 
-Option for executing the command (set -e flag): 
+### Execute a shell command
+
+Add the -e flag to execute the command:
 
     sgtpp shell "Command to search replace in files recursive in current directory" -e
     # -> Execute command: find . -type f -exec sed -i 's/search/replace/g' {} \; ? Sure you want to continue? [Y/n]
