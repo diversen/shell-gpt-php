@@ -6,9 +6,9 @@ This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
 Download a release, e.g.: 
     
-    shgpt-v0.0.2.phar
+    shgpt-v0.0.3.phar
 
-    sudo mv shgpt-v0.0.1.phar /usr/local/bin/shgpt
+    sudo mv shgpt-v0.0.3.phar /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
 You will need an API key
