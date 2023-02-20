@@ -50,6 +50,7 @@ class Base
             'curie' => 'text-curie-001',
             'babbage' => 'text-babbage-001',
             'ada' => 'text-ada-001',
+            'code-davinci' => 'code-davinci-002', // Experimental
         ];
 
         $model = $parse_argv->getOption('model') ?? 'davinci';

@@ -1,7 +1,6 @@
 {
     "name": "diversen/shell-gpt-php",
     "description": "Using the GPT engine to generate code, system commands, or chat",
-    "type": "project",
     "license": "MIT",
     "autoload": {
         "psr-4": {
