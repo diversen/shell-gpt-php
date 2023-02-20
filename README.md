@@ -13,13 +13,12 @@ Download the latest release:
 Or build it yourself:
     
 You will need to install `phar-composer`
-Instructions can be found on this link: [https://github.com/clue/phar-composer](https://github.com/clue/phar-composer).
+Instructions can be found on this link: 
+[https://github.com/clue/phar-composer](https://github.com/clue/phar-composer).
 
-    git clone git@github.com:diversen/shell-gpt-php.git
-    cd shell-gpt-php
-    composer install
-    mkdir -p releases
-    ./build.sh
+    phar-composer build diversen/shell-gpt-php:v0.0.5 shgpt
+    sudo mv shgpt /usr/local/bin/shgpt
+    sudo chmod +x /usr/local/bin/shgpt
 
 Release will be in e.g. `releases/shgpt-v0.0.4.phar`
 
