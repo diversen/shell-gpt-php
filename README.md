@@ -6,8 +6,8 @@ This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
 Download the latest release:
 
-    wget https://10kilobyte.com/shgpt/shgpt
-    sudo mv shgpt /usr/local/bin/shgpt
+    wget https://10kilobyte.com/shgpt/shgpt.phar
+    sudo mv shgpt.phar /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
 Or build it yourself:
@@ -16,8 +16,8 @@ You will need to install `phar-composer`.
 Instructions can be found on this link: 
 [https://github.com/clue/phar-composer](https://github.com/clue/phar-composer).
 
-    phar-composer build diversen/shell-gpt-php:v0.0.5 shgpt
-    sudo mv shgpt /usr/local/bin/shgpt
+    phar-composer build diversen/shell-gpt-php:v0.0.5 shgpt.phar
+    sudo mv shgpt.phar /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
 ## Usage
