@@ -20,8 +20,6 @@ Instructions can be found on this link:
     sudo mv shgpt /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
-Release will be in e.g. `releases/shgpt-v0.0.4.phar`
-
 ## Usage
 
 You will need an API key
