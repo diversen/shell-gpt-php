@@ -13,7 +13,8 @@ Download a release, e.g.:
 
 Build it yourself:
     
-You will need to install `phar-composer` [https://github.com/clue/phar-composer](https://github.com/clue/phar-composer):
+You will need to install `phar-composer`
+Instructions can be found on this link: https://github.com/clue/phar-composer](https://github.com/clue/phar-composer):
 
     git clone git@github.com:diversen/shell-gpt-php.git
     cd shell-gpt-php
