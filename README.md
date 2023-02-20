@@ -11,6 +11,19 @@ Download a release, e.g.:
     sudo mv shgpt-v0.0.3.phar /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
+Build it yourself:
+    
+You will need to install `phar-composer` [https://github.com/clue/phar-composer](https://github.com/clue/phar-composer):
+
+    git clone git@github.com:diversen/shell-gpt-php.git
+    cd shell-gpt-php
+    composer install
+    mkdir -p releases
+    ./build.sh
+
+Release will be in `releases/shgpt-v0.0.3.phar`
+
+
 You will need an API key
 
 If you don't have one you will be prompted: 
