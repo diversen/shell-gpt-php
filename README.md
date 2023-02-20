@@ -56,4 +56,4 @@ Add the -e flag to execute the command:
 
 ## License
 
-MIT
+MIT © [Dennis Iversen](https://github.com/diversen)
