@@ -4,14 +4,13 @@ This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
 ## Installation
 
-Download a release, e.g.: 
-    
-    shgpt-v0.0.3.phar
+Download the latest release:
 
-    sudo mv shgpt-v0.0.3.phar /usr/local/bin/shgpt
+    wget https://10kilobyte.com/shgpt/shgpt.phar
+    sudo mv shgpt.phar /usr/local/bin/shgpt
     sudo chmod +x /usr/local/bin/shgpt
 
-Build it yourself:
+Or build it yourself:
     
 You will need to install `phar-composer`
 Instructions can be found on this link: [https://github.com/clue/phar-composer](https://github.com/clue/phar-composer).
@@ -22,8 +21,9 @@ Instructions can be found on this link: [https://github.com/clue/phar-composer](
     mkdir -p releases
     ./build.sh
 
-Release will be in `releases/shgpt-v0.0.3.phar`
+Release will be in e.g. `releases/shgpt-v0.0.4.phar`
 
+## Usage
 
 You will need an API key
 
@@ -31,9 +31,6 @@ If you don't have one you will be prompted:
 
     "No GPT-3 API key found. Please enter a valid API key:"
     # -> Enter your API key
-
-
-## Usage
 
 ### Generate a shell command: 
 
