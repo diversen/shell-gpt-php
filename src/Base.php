@@ -3,6 +3,8 @@
 namespace Diversen\GPT;
 
 use Diversen\Cli\Utils;
+use Diversen\Spinner;
+use Exception;
 
 class Base
 {
@@ -84,9 +86,10 @@ class Base
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
-            print('Request error:' . curl_error($ch));
-            exit(1);
+            throw new Exception('Request error:' . curl_error($ch));
         }
+
+        
         curl_close($ch);
 
         return $result;
@@ -94,7 +97,23 @@ class Base
 
     public function getResult(array $params)
     {
-        $result = $this->openAiRequest($params);
+
+        // Output is to STDOUT
+        $spinner = new Spinner(spinner:'dots');
+        $result = $spinner->callback(function() use ($params) {
+            try {
+                $res = $this->openAiRequest($params);
+                return $res;
+            } catch (Exception $e) {
+                print($e->getMessage() . PHP_EOL);
+                return 1;
+            }
+        });
+
+        if ($result === 1) {
+            exit(1);
+        }
+        
         $result = json_decode($result, true);
         $error = $result["error"] ?? null;
 
