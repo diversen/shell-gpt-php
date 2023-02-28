@@ -19,6 +19,6 @@
     
     "require": {
         "diversen/minimal-cli-framework": "^6.1",
-        "diversen/php-cli-spinners": "^0.0.3"
+        "diversen/php-cli-spinners": "^0.0"
     }
 }
