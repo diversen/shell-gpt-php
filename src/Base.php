@@ -58,11 +58,15 @@ class Base
         $model = $parse_argv->getOption('model') ?? 'davinci';
         $model = $models[$model] ?? $model;
 
+        $max_tokens = $parse_argv->getOption('max-tokens') ?? 2048;
+        $temperature = $parse_argv->getOption('temperature') ?? 0.2;
+        $top_p = $parse_argv->getOption('top-p') ?? 0.9;
+        
         $params = [
             'model' => $model,
-            'max_tokens' => $parse_argv->getOption('max-tokens') ?? 2048,
-            'temperature' => $parse_argv->getOption('temperature') ?? 0.2,
-            'top_p' => $parse_argv->getOption('top-p') ?? 0.9,
+            'max_tokens' => (int) $max_tokens,
+            'temperature' => (float) $temperature,
+            'top_p' => (float) $top_p,
         ];
 
         return $params;
