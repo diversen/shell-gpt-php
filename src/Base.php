@@ -119,7 +119,6 @@ class Base
 
         if ($error) {
             print($result["error"]["message"] . PHP_EOL);
-            print("You may also check existing key file: " . $this->getKeyFile() . PHP_EOL);
             exit(1);
         }
         $text = trim($result["choices"][0]["text"]);
