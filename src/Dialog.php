@@ -29,12 +29,12 @@ class Dialog extends Base
         $params['messages'] = [];
         echo "Type 'exit' to exit" . PHP_EOL;
         while(true) {
-            $message = $this->utils->readSingleline('Message: ');
+            $message = $this->utils->readSingleline('You: ');
             if ($message === 'exit') {
                 break;
             }
 
-            echo $message . PHP_EOL;
+            // echo $message . PHP_EOL;
             $params['messages'][] = [
                 'role' => 'user', 'content' => $message,
             ];
@@ -43,7 +43,7 @@ class Dialog extends Base
             $params['messages'][] = [
                 'role' => 'assistant', 'content' => $result,
             ];
-            echo $result . PHP_EOL;
+            echo "Assistant: " . $result . PHP_EOL;
         }
     }
 }
