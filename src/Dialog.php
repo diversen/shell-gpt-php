@@ -34,7 +34,6 @@ class Dialog extends Base
                 break;
             }
 
-            // echo $message . PHP_EOL;
             $params['messages'][] = [
                 'role' => 'user', 'content' => $message,
             ];
