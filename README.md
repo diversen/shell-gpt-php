@@ -51,6 +51,15 @@ Add the -e flag to execute the command:
     shgpt chat "How do you say hello in spanish?"
     # -> "Hola"
 
+### Create a dialog (ChatGPT)
+
+Something more like ChatGPT (gpt-3.5-turbo model)
+
+    shgpt dialog
+
+    Type 'exit' to exit
+    Message: 
+
 ## License
 
 MIT © [Dennis Iversen](https://github.com/diversen)
