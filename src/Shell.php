@@ -10,6 +10,7 @@ class Shell extends Base
     public function __construct()
     {
         parent::__construct();
+        $this->endpoint = 'https://api.openai.com/v1/completions';
     }
 
     public function getCommand()
@@ -31,11 +32,10 @@ class Shell extends Base
 
         $params = $this->getBaseParams($parse_argv);
         $prompt = $parse_argv->getArgument(0);
-        $params['prompt'] = $prompt . '. Provide only shell command as output.';
-        $text = $this->getResult($params);
+        $params['prompt'] = $prompt . '. Provide only shell code as output.';
+        $text = $this->getCompletions($params);
 
         if ($parse_argv->getOption('execute')) {
-
             if ($this->utils->readlineConfirm("Execute command: " . $text . " ?")) {
                 passthru($text);
             }

@@ -10,12 +10,21 @@ class Base
 {
 
     public $utils = null;
+    public $endpoint = '';
+    
 
     public array $baseOptions = [
-        '--model' => 'GPT-3 model name. davinci, curie, babbage, ada',
+        '--model' => 'GPT-3 model name. gpt-3.5-turbo, text-davinci-003, text-curie-001, see: https://beta.openai.com/docs/api-reference/models',
         '--max-tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top-p' => 'Top p of output. Between 0 and 1. Higher value is more random',
+    ];
+
+    public array $defaultOptions = [
+        'model' => 'text-davinci-003',
+        'max_tokens' => 2048,
+        'temperature' => 1, // 0 - 2 higher value means more random
+        'top_p' => 0.5, // 0 -1 higher value means more random
     ];
 
     public function __construct()
@@ -47,36 +56,31 @@ class Base
 
     public function getBaseParams(\Diversen\ParseArgv $parse_argv)
     {
-        $models = [
-            'davinci' => 'text-davinci-003',
-            'curie' => 'text-curie-001',
-            'babbage' => 'text-babbage-001',
-            'ada' => 'text-ada-001',
-            'code-davinci' => 'code-davinci-002', // Experimental
-        ];
 
-        $model = $parse_argv->getOption('model') ?? 'davinci';
-        $model = $models[$model] ?? $model;
+        if ($parse_argv->getOption('model')) {
+            $this->defaultOptions['model'] = $parse_argv->getOption('model');
+        }
 
-        $max_tokens = $parse_argv->getOption('max-tokens') ?? 2048;
-        $temperature = $parse_argv->getOption('temperature') ?? 0.2;
-        $top_p = $parse_argv->getOption('top-p') ?? 0.9;
-        
-        $params = [
-            'model' => $model,
-            'max_tokens' => (int) $max_tokens,
-            'temperature' => (float) $temperature,
-            'top_p' => (float) $top_p,
-        ];
+        if ($parse_argv->getOption('temperature')) {
+            $this->defaultOptions['temperature'] = (float) $parse_argv->getOption('temperature');
+        }
 
-        return $params;
+        if ($parse_argv->getOption('top-p')) {
+            $this->defaultOptions['top_p'] = (float) $parse_argv->getOption('top-p');
+        }
+
+        if ($parse_argv->getOption('max-tokens')) {
+            $this->defaultOptions['max_tokens'] = (int) $parse_argv->getOption('max-tokens');
+        }
+
+        return $this->defaultOptions;
     }
 
-    public function openAiRequest($params)
+    private function openAiRequest($params)
     {
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.openai.com/v1/completions');
+        curl_setopt($ch, CURLOPT_URL, $this->endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
@@ -93,18 +97,16 @@ class Base
             throw new Exception('Request error:' . curl_error($ch));
         }
 
-        
         curl_close($ch);
 
         return $result;
     }
 
-    public function getResult(array $params)
+    public function getApiResult(array $params)
     {
 
-        // Output is to STDOUT
-        $spinner = new Spinner(spinner:'dots');
-        $result = $spinner->callback(function() use ($params) {
+        $spinner = new Spinner(spinner: 'simpleDots');
+        $result = $spinner->callback(function () use ($params) {
             try {
                 $res = $this->openAiRequest($params);
                 return $res;
@@ -117,7 +119,7 @@ class Base
         if ($result === 1) {
             exit(1);
         }
-        
+
         $result = json_decode($result, true);
         $error = $result["error"] ?? null;
 
@@ -125,7 +127,24 @@ class Base
             print($result["error"]["message"] . PHP_EOL);
             exit(1);
         }
+
+        return $result;
+    }
+
+    public function getCompletions(array $params)
+    {
+
+        $this->endpoint = 'https://api.openai.com/v1/completions';
+        $result = $this->getApiResult($params);
         $text = trim($result["choices"][0]["text"]);
+        return $text;
+    }
+
+    public function getChatCompletion(array $params)
+    {
+        $this->endpoint = 'https://api.openai.com/v1/chat/completions';
+        $result = $this->getApiResult($params);
+        $text = trim($result["choices"][0]["message"]["content"]);
         return $text;
     }
 }

@@ -1,6 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require __DIR__ . '/../vendor/autoload.php';
 } elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
@@ -17,10 +21,12 @@ use Diversen\MinimalCli;
 use Diversen\GPT\Shell;
 use Diversen\GPT\Chat;
 use Diversen\GPT\Code;
+use Diversen\GPT\Dialog;
 
 $minimal_cli = new MinimalCli();
 $minimal_cli->header = "shgpt (Shell GTP for PHP - v0.0.9)";
 $minimal_cli->addCommandClass('shell', Shell::class);
 $minimal_cli->addCommandClass('chat', Chat::class);
 $minimal_cli->addCommandClass('code', Code::class);
+$minimal_cli->addCommandClass('dialog', Dialog::class);
 $minimal_cli->runMain();
