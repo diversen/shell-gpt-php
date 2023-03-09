@@ -191,7 +191,6 @@ class Base
         $file = $this->base_dir . '/tokens_used.txt';
 
         if (!file_exists($file)) {
-            echo "Does not exist";
             file_put_contents($file, '');
         }
 
