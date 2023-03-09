@@ -6,9 +6,11 @@ This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
 
 Download the latest release (it is always here):
 
-    wget https://10kilobyte.com/shgpt/shgpt.phar
-    sudo cp -r shgpt.phar /usr/local/bin/shgpt
-    sudo chmod +x /usr/local/bin/shgpt
+```bash
+wget https://10kilobyte.com/shgpt/shgpt.phar
+sudo cp -r shgpt.phar /usr/local/bin/shgpt
+sudo chmod +x /usr/local/bin/shgpt
+```
 
 Or build it yourself:
     
