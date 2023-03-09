@@ -31,9 +31,11 @@ class Shell extends Base
     {
 
         $params = $this->getBaseParams($parse_argv);
-        $prompt = $parse_argv->getArgument(0);
+        $prompt = $this->getPromptArgument($parse_argv); 
         $params['prompt'] = $prompt . '. Provide only shell code as output.';
-        $text = $this->getCompletions($params);
+
+        $result = $this->getCompletions($params);
+        $text = $result->content;
 
         if ($parse_argv->getOption('execute')) {
             if ($this->utils->readlineConfirm("Execute command: " . $text . " ?")) {

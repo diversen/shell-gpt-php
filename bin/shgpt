@@ -14,7 +14,6 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-// hide PHP 8.1 deprecations
 error_reporting(E_ALL);
 
 use Diversen\MinimalCli;
@@ -22,6 +21,7 @@ use Diversen\GPT\Shell;
 use Diversen\GPT\Chat;
 use Diversen\GPT\Code;
 use Diversen\GPT\Dialog;
+use Diversen\GPT\Usage;
 
 $minimal_cli = new MinimalCli();
 $minimal_cli->header = "shgpt (Shell GTP for PHP - v0.1.0)";
@@ -29,4 +29,5 @@ $minimal_cli->addCommandClass('shell', Shell::class);
 $minimal_cli->addCommandClass('chat', Chat::class);
 $minimal_cli->addCommandClass('code', Code::class);
 $minimal_cli->addCommandClass('dialog', Dialog::class);
+$minimal_cli->addCommandClass('usage', Usage::class);
 $minimal_cli->runMain();

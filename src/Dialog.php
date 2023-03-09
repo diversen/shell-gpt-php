@@ -39,10 +39,12 @@ class Dialog extends Base
             ];
             
             $result = $this->getChatCompletion($params);
+            $content = $result->content;
+            $tokens = $result->tokens_used;
             $params['messages'][] = [
-                'role' => 'assistant', 'content' => $result,
+                'role' => 'assistant', 'content' => $content,
             ];
-            echo "Assistant: " . $result . PHP_EOL;
+            echo "Assistant: " . $content . $this->getTokensUsedLine($tokens) . PHP_EOL . PHP_EOL;
         }
     }
 }

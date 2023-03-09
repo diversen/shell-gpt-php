@@ -6,15 +6,22 @@ use Diversen\Cli\Utils;
 use Diversen\Spinner;
 use Exception;
 
+class Result
+{
+    public string $tokens_used;
+    public string $content;
+}
+
 class Base
 {
 
     public $utils = null;
-    public $endpoint = '';
-    
+    public string $endpoint = '';
+    public $base_dir = '';
+    private string $api_key = '';
 
     public array $baseOptions = [
-        '--model' => 'GPT-3 model name. gpt-3.5-turbo, text-davinci-003, text-curie-001, see: https://beta.openai.com/docs/api-reference/models',
+        '--model' => 'GPT-3 model name. text-davinci-003, text-curie-001 etc. See: https://beta.openai.com/docs/api-reference/models',
         '--max-tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top-p' => 'Top p of output. Between 0 and 1. Higher value is more random',
@@ -30,28 +37,24 @@ class Base
     public function __construct()
     {
         $this->utils = new Utils();
-    }
-
-    private function getKeyFile()
-    {
-        $key_dir = getenv("HOME") . '/.config/shell-gpt';
-        if (!file_exists($key_dir)) {
-            mkdir($key_dir, 0700, true);
+        $this->base_dir = getenv("HOME") . '/.config/shell-gpt';
+        if (!file_exists($this->base_dir)) {
+            mkdir($this->base_dir, 0755, true);
         }
-        $file = $key_dir . '/api_key.txt';
-        return $file;
     }
 
-    private function getApiKey()
-    {
-        $file = $this->getKeyFile();
+    private function setApiKey() {
+        $file = $this->base_dir . '/api_key.txt';
         if (file_exists($file)) {
-            return trim(file_get_contents($file));
+            $this->api_key = trim(file_get_contents($file));
+            return;
         }
 
-        $api_key = $this->utils->readSingleline("No GPT-3 API key found. Please enter a valid API key:\n");
-        file_put_contents($file, $api_key);
-        return $api_key;
+        $this->api_key = $this->utils->readSingleline("No openAI API key found. Please enter a valid API key:");
+        $res = file_put_contents($file, $this->api_key);
+        if ($res === false) {
+            throw new Exception("Could not write API key to file");
+        }
     }
 
     public function getBaseParams(\Diversen\ParseArgv $parse_argv)
@@ -84,11 +87,12 @@ class Base
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
-        $api_key = $this->getApiKey();
+
         $headers = array();
         $headers[] = 'Content-Type: application/json';
-        $headers[] = 'Authorization: Bearer ' . $api_key;
+        $headers[] = 'Authorization: Bearer ' . $this->api_key;
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -104,6 +108,8 @@ class Base
 
     public function getApiResult(array $params)
     {
+
+        $this->setApiKey();
 
         $spinner = new Spinner(spinner: 'simpleDots');
         $result = $spinner->callback(function () use ($params) {
@@ -131,20 +137,65 @@ class Base
         return $result;
     }
 
-    public function getCompletions(array $params)
+    public function getCompletions(array $params): Result
     {
 
         $this->endpoint = 'https://api.openai.com/v1/completions';
         $result = $this->getApiResult($params);
         $text = trim($result["choices"][0]["text"]);
-        return $text;
+        $tokens = $result["usage"]["total_tokens"];
+
+        $result = new Result();
+        $result->tokens_used = $tokens;
+        $result->content = $text;
+
+        $this->logTokensUsed($tokens);
+
+        return $result;
     }
 
-    public function getChatCompletion(array $params)
+    public function getChatCompletion(array $params): Result
     {
         $this->endpoint = 'https://api.openai.com/v1/chat/completions';
         $result = $this->getApiResult($params);
         $text = trim($result["choices"][0]["message"]["content"]);
-        return $text;
+        $tokens = $result["usage"]["total_tokens"];
+
+        $result = new Result();
+        $result->tokens_used = $tokens;
+        $result->content = $text;
+
+        $this->logTokensUsed($tokens);
+
+        return $result;
+    }
+
+    public function getTokensUsedLine(string $tokens)
+    {
+        return " (tokens used: $tokens) ";
+    }
+
+    public function getPromptArgument(\Diversen\ParseArgv $parse_argv)
+    {
+        if (!$parse_argv->getArgument(0)) {
+            echo "No prompt given. Please specify your prompt. " . PHP_EOL;
+            exit(1);
+        }
+
+        $prompt = trim(implode(" ", $parse_argv->arguments));
+        return $prompt;
+    }
+
+    private function logTokensUsed(string $tokens)
+    {
+        $file = $this->base_dir . '/tokens_used.txt';
+
+        if (!file_exists($file)) {
+            echo "Does not exist";
+            file_put_contents($file, '');
+        }
+
+        $content = time() . "," . $tokens . PHP_EOL;
+        file_put_contents($file, $content, FILE_APPEND);
     }
 }
