@@ -56,6 +56,10 @@ Something more like ChatGPT (gpt-3.5-turbo model)
     Type 'exit' to exit
     Message: 
 
+### Show token usage
+
+    shgpt usage
+
 ## License
 
 MIT © [Dennis Iversen](https://github.com/diversen)
