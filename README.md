@@ -8,7 +8,7 @@ Download the latest release (it is always here):
 
 ```bash
 wget https://10kilobyte.com/shgpt/shgpt.phar
-sudo cp -r shgpt.phar /usr/local/bin/shgpt
+sudo cp -f shgpt.phar /usr/local/bin/shgpt
 sudo chmod +x /usr/local/bin/shgpt
 ```
 
