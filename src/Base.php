@@ -82,7 +82,7 @@ class Base
 
     /**
      * Use multi-curl in order to make the request non blocking
-     * Otherwise it is not possible to show a spinner
+     * Easier to abort the request
      */
     private function openAiRequest($params)
     {
