@@ -38,7 +38,7 @@ class Dialog extends Base
                 'role' => 'user', 'content' => $message,
             ];
             
-            $result = $this->getChatCompletion($params);
+            $result = $this->getChatCompletions($params);
             $content = $result->content;
             $tokens = $result->tokens_used;
             $params['messages'][] = [

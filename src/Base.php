@@ -176,7 +176,7 @@ class Base
         return $result;
     }
 
-    public function getChatCompletion(array $params): Result
+    public function getChatCompletions(array $params): Result
     {
         $this->endpoint = 'https://api.openai.com/v1/chat/completions';
         $result = $this->getApiResult($params);
