@@ -27,7 +27,7 @@ class Dialog extends Base
         $params['model'] = 'gpt-3.5-turbo';
         
         $params['messages'] = [];
-        echo "Type 'exit' to exit" . PHP_EOL;
+        print("Type 'exit' to exit" . PHP_EOL);
         while(true) {
             $message = $this->utils->readSingleline('You: ');
             if ($message === 'exit') {
@@ -44,7 +44,7 @@ class Dialog extends Base
             $params['messages'][] = [
                 'role' => 'assistant', 'content' => $content,
             ];
-            echo "Assistant: " . $content . $this->getTokensUsedLine($tokens) . PHP_EOL . PHP_EOL;
+            print("Assistant: " . $content . $this->getTokensUsedLine($tokens) . PHP_EOL);
         }
     }
 }

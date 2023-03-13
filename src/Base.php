@@ -15,6 +15,7 @@ class Result
 class Base
 {
 
+    public $timeout = 60;
     public $utils = null;
     public string $endpoint = '';
     public $base_dir = '';
@@ -25,6 +26,7 @@ class Base
         '--max-tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top-p' => 'Top p of output. Between 0 and 1. Higher value is more random',
+        '--timeout' => 'Timeout in seconds. Default is 60 seconds',
     ];
 
     public array $defaultOptions = [
@@ -77,6 +79,10 @@ class Base
             $this->defaultOptions['max_tokens'] = (int) $parse_argv->getOption('max-tokens');
         }
 
+        if ($parse_argv->getOption('timeout')) {
+            $this->timeout = (int) $parse_argv->getOption('timeout');
+        }
+
         return $this->defaultOptions;
     }
 
@@ -91,8 +97,8 @@ class Base
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: Bearer ' . $this->api_key;
@@ -128,6 +134,30 @@ class Base
         return $result;
     }
 
+    /**
+     * Checks if the result is valid
+     */
+    private function validateResult($result) {
+        if ($result == null) {
+            print("Request timed out" . PHP_EOL);
+            exit(1);
+        }
+
+        if ($result === 1) {
+            exit(1);
+        }
+
+        $result = json_decode($result, true);
+        $error = $result["error"] ?? null;
+
+        if ($error) {
+            print($result["error"]["message"] . PHP_EOL);
+            exit(1);
+        }
+
+        return $result;
+    }
+
     public function getApiResult(array $params)
     {
 
@@ -144,18 +174,7 @@ class Base
             }
         });
 
-        if ($result === 1) {
-            exit(1);
-        }
-
-        $result = json_decode($result, true);
-        $error = $result["error"] ?? null;
-
-        if ($error) {
-            print($result["error"]["message"] . PHP_EOL);
-            exit(1);
-        }
-
+        $result = $this->validateResult($result);
         return $result;
     }
 
@@ -200,7 +219,7 @@ class Base
     public function getPromptArgument(\Diversen\ParseArgv $parse_argv)
     {
         if (!$parse_argv->getArgument(0)) {
-            echo "No prompt given. Please specify your prompt. " . PHP_EOL;
+            print("No prompt given. Please specify your prompt. " . PHP_EOL);
             exit(1);
         }
 

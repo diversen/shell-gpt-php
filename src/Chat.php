@@ -32,6 +32,6 @@ class Chat extends Base
         $params['prompt'] = $prompt;
         $result = $this->getCompletions($params);
         $text = $result->content;
-        echo $text . PHP_EOL;
+        print($text . PHP_EOL);
     }
 }
