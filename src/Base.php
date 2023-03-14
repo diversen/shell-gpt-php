@@ -8,18 +8,20 @@ use Exception;
 
 class Result
 {
-    public string $tokens_used;
+    public string $tokens_used = '0';
     public string $content;
+    public ?string $error = null;
 }
 
 class Base
 {
 
     public $timeout = 60;
-    public $utils = null;
+    public ?Utils $utils = null;
     public string $endpoint = '';
     public $base_dir = '';
     private string $api_key = '';
+    public ?string $error = null;
 
     public array $baseOptions = [
         '--model' => 'GPT-3 model name. text-davinci-003, text-curie-001 etc. See: https://beta.openai.com/docs/api-reference/models',
@@ -69,10 +71,12 @@ class Base
 
         if ($parse_argv->getOption('temperature')) {
             $this->defaultOptions['temperature'] = (float) $parse_argv->getOption('temperature');
+            unset($this->defaultOptions['top_p']);
         }
 
         if ($parse_argv->getOption('top-p')) {
             $this->defaultOptions['top_p'] = (float) $parse_argv->getOption('top-p');
+            unset($this->defaultOptions['temperature']);
         }
 
         if ($parse_argv->getOption('max-tokens')) {
@@ -98,7 +102,7 @@ class Base
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        
+
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: Bearer ' . $this->api_key;
@@ -122,7 +126,7 @@ class Base
         }
 
         if ($status !== CURLM_OK) {
-            throw new Exception('Request error:' . curl_multi_strerror($status));
+            throw new Exception(curl_multi_strerror($status));
         }
 
         $result = curl_multi_getcontent($ch);
@@ -137,22 +141,13 @@ class Base
     /**
      * Checks if the result is valid
      */
-    private function validateResult($result) {
-        if ($result == null) {
-            print("Request timed out" . PHP_EOL);
-            exit(1);
-        }
-
-        if ($result === 1) {
-            exit(1);
-        }
-
+    private function validateResult($result)
+    {
         $result = json_decode($result, true);
         $error = $result["error"] ?? null;
 
         if ($error) {
-            print($result["error"]["message"] . PHP_EOL);
-            exit(1);
+            $this->error = "API ERROR: " . $result["error"]["message"];
         }
 
         return $result;
@@ -166,11 +161,13 @@ class Base
         $spinner = new Spinner(spinner: 'simpleDots');
         $result = $spinner->callback(function () use ($params) {
             try {
-                $res = $this->openAiRequest($params);
-                return $res;
+                $result = $this->openAiRequest($params);
+                if ($result === '') {
+                    $this->error = "API Error: Request timed out";
+                }
+                return $result;
             } catch (Exception $e) {
-                print($e->getMessage() . PHP_EOL);
-                return 1;
+                $this->error = "Request Error" . $e->getMessage();
             }
         });
 
@@ -182,15 +179,16 @@ class Base
     {
 
         $this->endpoint = 'https://api.openai.com/v1/completions';
-        $result = $this->getApiResult($params);
-        $text = trim($result["choices"][0]["text"]);
-        $tokens = $result["usage"]["total_tokens"];
-
+        $api_result = $this->getApiResult($params);
         $result = new Result();
-        $result->tokens_used = $tokens;
-        $result->content = $text;
 
-        $this->logTokensUsed($tokens);
+        if (!$this->error) {
+            $result->tokens_used = $api_result["usage"]["total_tokens"];
+            $result->content = trim($api_result["choices"][0]["text"]);
+            $this->logTokensUsed($api_result["usage"]["total_tokens"]);
+        } else {
+            $result->content = $this->error;
+        }
 
         return $result;
     }
@@ -198,15 +196,16 @@ class Base
     public function getChatCompletions(array $params): Result
     {
         $this->endpoint = 'https://api.openai.com/v1/chat/completions';
-        $result = $this->getApiResult($params);
-        $text = trim($result["choices"][0]["message"]["content"]);
-        $tokens = $result["usage"]["total_tokens"];
-
+        $api_result = $this->getApiResult($params);
         $result = new Result();
-        $result->tokens_used = $tokens;
-        $result->content = $text;
-
-        $this->logTokensUsed($tokens);
+        
+        if (!$this->error) {
+            $result->tokens_used = $api_result["usage"]["total_tokens"];
+            $result->content = trim($api_result["choices"][0]["message"]["content"]);
+            $this->logTokensUsed($api_result["usage"]["total_tokens"]);
+        } else {
+            $result->content = $this->error;
+        }
 
         return $result;
     }

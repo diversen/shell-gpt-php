@@ -33,5 +33,9 @@ class Chat extends Base
         $result = $this->getCompletions($params);
         $text = $result->content;
         print($text . PHP_EOL);
+
+        if ($this->error) {
+            exit(1);
+        }
     }
 }

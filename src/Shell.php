@@ -44,5 +44,9 @@ class Shell extends Base
         } else {
             echo $text . PHP_EOL;
         }
+
+        if ($this->error) {
+            exit(1);
+        }
     }
 }
