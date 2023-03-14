@@ -53,11 +53,9 @@ Add the -e flag to execute the command:
 
 Something more like ChatGPT (gpt-3.5-turbo model)
 
-    shgpt dialog
-
-    Type 'exit' to exit
-    Message: 
-
+    Type 'exit' to exit. 'save' to save
+    You: Type something ...
+    
 ### Show token usage
 
     shgpt usage
