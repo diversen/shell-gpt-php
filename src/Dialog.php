@@ -44,7 +44,7 @@ class Dialog extends Base
         $params['model'] = 'gpt-3.5-turbo';
 
         $params['messages'] = [];
-        print("Type 'exit' to exit" . PHP_EOL);
+        print("Type 'exit' to exit. 'save' to save" . PHP_EOL);
         while (true) {
 
             $message = $this->utils->readSingleline('You: ');
