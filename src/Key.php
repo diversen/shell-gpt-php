@@ -33,8 +33,15 @@ class Key extends Base
         $params = $this->default_options;
         $params['prompt'] = "Say 'API key seems to work!' and nothing more. Just a test";
         $result = $this->getCompletions($params);
-        $text = $result->content;
-        print($text . PHP_EOL);
+
+        if ($result->isError()) {
+            $text = $result->content;
+            print($text . PHP_EOL);
+            exit(1);
+        }
+
+        print($result->content) . PHP_EOL;
+        exit(0);
     }
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)

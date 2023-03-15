@@ -83,7 +83,7 @@ class Base
 
     public function getCompletions(array $params): ApiResult
     {
-
+        $this->getApiKey();
         $spinner = new Spinner(spinner: 'simpleDots');
         $result = $spinner->callback(function () use ($params) {
             $openai_api = new OpenAiApi($this->getApiKey());
@@ -97,7 +97,7 @@ class Base
 
     public function getChatCompletions(array $params): ApiResult
     {
-
+        $this->getApiKey();
         $spinner = new Spinner(spinner: 'simpleDots');
         $result = $spinner->callback(function () use ($params) {
             $openai_api = new OpenAiApi($this->getApiKey());
