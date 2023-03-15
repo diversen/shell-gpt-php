@@ -18,14 +18,11 @@ You will need to install `phar-composer`.
 
 Clone this repo and run [build.sh](build.sh)
 
-## Usage
+## Set key
 
-You will need an API key
+Set (or change) API key
 
-If you don't have one you will be prompted: 
-
-    "No GPT-3 API key found. Please enter a valid API key:"
-    # -> Enter your API key
+    shgpt key
 
 ### Generate a shell command: 
 

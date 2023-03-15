@@ -20,7 +20,6 @@ class Base
     public ?Utils $utils = null;
     public string $endpoint = '';
     public $base_dir = '';
-    private string $api_key = '';
     public ?string $error = null;
 
     public array $baseOptions = [
@@ -47,19 +46,15 @@ class Base
         }
     }
 
-    private function setApiKey()
+    private function getApiKey()
     {
         $file = $this->base_dir . '/api_key.txt';
         if (file_exists($file)) {
-            $this->api_key = trim(file_get_contents($file));
-            return;
+            return trim(file_get_contents($file));
         }
 
-        $this->api_key = $this->utils->readSingleline("No openAI API key found. Please enter a valid API key:");
-        $res = file_put_contents($file, $this->api_key);
-        if ($res === false) {
-            throw new Exception("Could not write API key to file");
-        }
+        print("No openAI API key found. Use 'shgpt key' to set it." . PHP_EOL);
+        exit(1);
     }
 
     public function getBaseParams(\Diversen\ParseArgv $parse_argv)
@@ -103,9 +98,11 @@ class Base
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 
+        $api_key = $this->getApiKey();
+
         $headers = array();
         $headers[] = 'Content-Type: application/json';
-        $headers[] = 'Authorization: Bearer ' . $this->api_key;
+        $headers[] = 'Authorization: Bearer ' . $api_key;
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -155,8 +152,6 @@ class Base
 
     public function getApiResult(array $params)
     {
-
-        $this->setApiKey();
 
         $spinner = new Spinner(spinner: 'simpleDots');
         $result = $spinner->callback(function () use ($params) {
