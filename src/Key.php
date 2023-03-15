@@ -35,7 +35,6 @@ class Key extends Base
         $result = $this->getCompletions($params);
         $text = $result->content;
         print($text . PHP_EOL);
-        
     }
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)

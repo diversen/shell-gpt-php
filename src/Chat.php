@@ -27,7 +27,7 @@ class Chat extends Base
     {
 
         $params = $this->getBaseParams($parse_argv);
-        $prompt = $this->getPromptArgument($parse_argv); 
+        $prompt = $this->getPromptArgument($parse_argv);
 
         $params['prompt'] = $prompt;
         $result = $this->getCompletions($params);

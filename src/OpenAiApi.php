@@ -21,9 +21,6 @@ class OpenAiApi
     private function openAiRequest($endpoint, $params)
     {
 
-        // Generate $params by merging default options with $params
-        // $params = array_merge($default_params, $params);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -92,7 +89,6 @@ class OpenAiApi
 
             $api_result->setResult($result);
             $api_result->setCompletions();
-
         } catch (Throwable $e) {
 
             $api_result->error_code = $e->getCode();
@@ -113,7 +109,6 @@ class OpenAiApi
 
             $api_result->setResult($result);
             $api_result->setChatCompletions();
-
         } catch (Throwable $e) {
 
             $api_result->error_code = $e->getCode();
@@ -121,13 +116,6 @@ class OpenAiApi
         }
 
         return $api_result;
-        // $endpoint = 'https://api.openai.com/v1/chat/completions';
-        // $api_result = $this->openAiRequest($endpoint, $params);
-
-        // $result = new ApiResult($api_result);
-        // $result->setChatCompletions();
-
-        // return $result;
     }
 
     /**
@@ -143,22 +131,22 @@ class OpenAiApi
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         curl_setopt($ch, CURLOPT_TIMEOUT, 0);
-    
+
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: Bearer ' . $this->api_key;
         $headers[] = 'Accept: text/event-stream';
-    
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    
+
         $mh = curl_multi_init();
         curl_multi_add_handle($mh, $ch);
-    
+
         $result = '';
         do {
             curl_multi_select($mh);
             curl_multi_exec($mh, $active);
-    
+
             $info = curl_multi_info_read($mh);
             if ($info && $info['result'] == CURLM_OK) {
                 $ch = $info['handle'];
@@ -169,15 +157,15 @@ class OpenAiApi
                 }
             }
         } while ($active || $result === '');
-    
+
         if (curl_errno($ch)) {
             throw new Exception(curl_error($ch));
         }
-    
+
         curl_multi_remove_handle($mh, $ch);
         curl_multi_close($mh);
         curl_close($ch);
-    
+
         return $result;
     }
 }
