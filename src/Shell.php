@@ -10,7 +10,6 @@ class Shell extends Base
     public function __construct()
     {
         parent::__construct();
-        $this->endpoint = 'https://api.openai.com/v1/completions';
     }
 
     public function getCommand()
@@ -18,7 +17,7 @@ class Shell extends Base
         return [
             'usage' => 'Command to generate shell commands',
             'options' => [
-                ...$this->baseOptions,
+                ...$this->base_options,
                 '--execute' => 'Execute the command.'
             ],
             'arguments' => [
@@ -45,7 +44,7 @@ class Shell extends Base
             echo $text . PHP_EOL;
         }
 
-        if ($this->error) {
+        if ($result->isError()) {
             exit(1);
         }
     }

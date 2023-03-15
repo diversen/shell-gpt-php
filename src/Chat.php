@@ -16,7 +16,7 @@ class Chat extends Base
     {
         return [
             'usage' => 'Answer questions',
-            'options' => $this->baseOptions,
+            'options' => $this->base_options,
             'arguments' => [
                 'Prompt' => 'The prompt to generate completions for.',
             ]
@@ -34,7 +34,7 @@ class Chat extends Base
         $text = $result->content;
         print($text . PHP_EOL);
 
-        if ($this->error) {
+        if ($result->isError()) {
             exit(1);
         }
     }

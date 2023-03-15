@@ -16,7 +16,7 @@ class Dialog extends Base
     {
         return [
             'usage' => 'Start a dialog.',
-            'options' => $this->baseOptions,
+            'options' => $this->base_options,
         ];
     }
 
@@ -63,6 +63,12 @@ class Dialog extends Base
             ];
 
             $result = $this->getChatCompletions($params);
+            if ($result->isError()) {
+                print($result->content) . PHP_EOL;
+                exit(1);
+
+            }
+
             $content = $result->content;
             $tokens = $result->tokens_used;
 

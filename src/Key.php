@@ -30,7 +30,7 @@ class Key extends Base
             exit(1);
         }
 
-        $params = $this->defaultOptions;
+        $params = $this->default_options;
         $params['prompt'] = "Say 'API key seems to work!' and nothing more. Just a test";
         $result = $this->getCompletions($params);
         $text = $result->content;

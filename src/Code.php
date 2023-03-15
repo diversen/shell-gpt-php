@@ -16,7 +16,7 @@ class Code extends Base
     {
         return [
             'usage' => 'Command to generate code',
-            'options' => $this->baseOptions,
+            'options' => $this->base_options,
             'arguments' => [
                 'Prompt' => 'The prompt to generate completions for.',
             ]
@@ -35,7 +35,7 @@ class Code extends Base
         
         print($text . PHP_EOL);
 
-        if ($this->error) {
+        if ($result->isError()) {
             exit(1);
         }
         
