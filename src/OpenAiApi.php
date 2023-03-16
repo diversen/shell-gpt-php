@@ -10,65 +10,60 @@ class OpenAiApi
 {
 
     private string $api_key = '';
-    private $timeout = 0;
+    private $timeout = 120;
 
-    public function __construct($api_key, $timeout = 0)
+    public function __construct($api_key, $timeout = 120)
     {
         $this->api_key = $api_key;
         $this->timeout = $timeout;
     }
 
+    private function parseHeaders($headers)
+    {
+        $head = array();
+        foreach ($headers as $k => $v) {
+            $t = explode(':', $v, 2);
+            if (isset($t[1]))
+                $head[trim($t[0])] = trim($t[1]);
+            else {
+                $head[] = $v;
+                if (preg_match("#HTTP/[0-9\.]+\s+([0-9]+)#", $v, $out))
+                    $head['response_code'] = intval($out[1]);
+            }
+        }
+        return $head;
+    }
+
     private function openAiRequest($endpoint, $params)
     {
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: Bearer ' . $this->api_key;
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $options = array(
+            'http' => array(
+                'header'  => $headers,
+                'method'  => 'POST',
+                'content' => json_encode($params),
+                'timeout' => $this->timeout,
+            ),
+        );
 
-        $mh = curl_multi_init();
-        curl_multi_add_handle($mh, $ch);
+        $context  = stream_context_create($options);
 
-        do {
-            $status = curl_multi_exec($mh, $active);
-        } while ($status === CURLM_CALL_MULTI_PERFORM || $active);
-
-        while ($active && $status === CURLM_OK) {
-            if (curl_multi_select($mh) === -1) {
-                usleep(100);
-            }
-            do {
-                $status = curl_multi_exec($mh, $active);
-            } while ($status === CURLM_CALL_MULTI_PERFORM);
+        try {
+            $stream = fopen($endpoint, 'r', false, $context);
+        } catch (Throwable $e) {
+            throw new Exception("Could not read from API endpoint.", 500);
         }
 
-        if ($status !== CURLM_OK) {
-            throw new Exception(501, curl_multi_strerror($status));
-        }
-
-        $http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $result = curl_multi_getcontent($ch);
-
-        if ($result === '') {
-            throw new Exception("No internet connection", 500);
-        }
-
-        if ($http_code >= 400) {
+        $result = stream_get_contents($stream);
+        $headers = $this->parseHeaders($http_response_header);
+        if ($headers['response_code'] >= 400) {
             $error_message = $this->getAPIError($result);
-            throw new Exception($error_message, $http_code);
+            throw new Exception($error_message, $headers['response_code']);
         }
-
-        curl_multi_remove_handle($mh, $ch);
-        curl_multi_close($mh);
-        curl_close($ch);
 
         return $result;
     }
@@ -100,7 +95,6 @@ class OpenAiApi
 
     public function getChatCompletions(array $params): ApiResult
     {
-
         $api_result = new ApiResult();
 
         try {
@@ -116,56 +110,5 @@ class OpenAiApi
         }
 
         return $api_result;
-    }
-
-    /**
-     * Stream completions. Not working yet 
-     */
-    public function openAiRequestStream($endpoint, $params)
-    {
-        $params["stream"] = true;
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
-        curl_setopt($ch, CURLOPT_TIMEOUT, 0);
-
-        $headers = array();
-        $headers[] = 'Content-Type: application/json';
-        $headers[] = 'Authorization: Bearer ' . $this->api_key;
-        $headers[] = 'Accept: text/event-stream';
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        $mh = curl_multi_init();
-        curl_multi_add_handle($mh, $ch);
-
-        $result = '';
-        do {
-            curl_multi_select($mh);
-            curl_multi_exec($mh, $active);
-
-            $info = curl_multi_info_read($mh);
-            if ($info && $info['result'] == CURLM_OK) {
-                $ch = $info['handle'];
-                $data = curl_multi_getcontent($ch);
-                $result .= $data;
-                if (strpos($result, '[DONE]') !== false) {
-                    break;
-                }
-            }
-        } while ($active || $result === '');
-
-        if (curl_errno($ch)) {
-            throw new Exception(curl_error($ch));
-        }
-
-        curl_multi_remove_handle($mh, $ch);
-        curl_multi_close($mh);
-        curl_close($ch);
-
-        return $result;
     }
 }

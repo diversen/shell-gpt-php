@@ -42,7 +42,7 @@ class Base
         }
     }
 
-    private function getApiKey()
+    public function getApiKey()
     {
         $file = $this->base_dir . '/api_key.txt';
         if (file_exists($file)) {
@@ -84,7 +84,7 @@ class Base
     public function getCompletions(array $params): ApiResult
     {
         $this->getApiKey();
-        $spinner = new Spinner(spinner: 'simpleDots');
+        $spinner = new Spinner(spinner: 'simpleDots', use_keyboard_interrupts: true);
         $result = $spinner->callback(function () use ($params) {
             $openai_api = new OpenAiApi($this->getApiKey());
             $result = $openai_api->getCompletions($params);
