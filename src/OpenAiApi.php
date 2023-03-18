@@ -3,7 +3,9 @@
 namespace Diversen\GPT;
 
 use Diversen\GPT\ApiResult;
+use Error;
 use Exception;
+use JsonException;
 use Throwable;
 
 class OpenAiApi
@@ -110,5 +112,49 @@ class OpenAiApi
         }
 
         return $api_result;
+    }
+
+    public function openAiStream(string $endpoint, array $params, callable $callback)
+    {
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Authorization: Bearer ' . $this->api_key;
+        $headers[] = 'Accept: text/event-stream';
+
+        $options = array(
+            'http' => array(
+                'header'  => $headers,
+                'method'  => 'POST',
+                'content' => json_encode($params),
+                'timeout' => $this->timeout,
+            ),
+        );
+
+        $context  = stream_context_create($options);
+
+        try {
+            $stream = fopen($endpoint, 'r', false, $context);
+        } catch (Throwable $e) {
+            throw new Exception("Could not read from API endpoint.", 500);
+        }
+
+        while (!feof($stream)) {
+            
+            $line = fgets($stream);
+            $line = explode('data: ', $line)[1] ?? '';
+            if (empty($line)) {
+                continue;
+            }
+
+            $json = json_decode($line, true);
+
+            $content = $json['choices'][0]['delta']['content'] ?? '';
+            $callback($content);
+            $finish_reason = $json['finish_reason'] ?? '';
+            if ($finish_reason) {
+                break;
+            }
+            usleep(100000);
+        }
     }
 }

@@ -26,7 +26,7 @@ use Diversen\GPT\Key;
 
 
 $minimal_cli = new MinimalCli();
-$minimal_cli->header = "shgpt (Shell GTP for PHP - v1.0.6)";
+$minimal_cli->header = "shgpt (Shell GTP for PHP - v1.0.7)";
 $minimal_cli->addCommandClass('shell', Shell::class);
 $minimal_cli->addCommandClass('chat', Chat::class);
 $minimal_cli->addCommandClass('code', Code::class);
