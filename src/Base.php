@@ -132,13 +132,10 @@ class Base
             return $result;
         }
 
-        
-
         $assistant = ['role' => 'assistant', 'text' => $complete_response];
         $json_assistent = json_encode($assistant, true);
         $tokens += Tokens::estimate_tokens($json_assistent, 'max');
         $this->logTokensUsed($tokens);
-
 
         $result->setResultAsText($complete_response, $tokens);
 

@@ -3,9 +3,7 @@
 namespace Diversen\GPT;
 
 use Diversen\GPT\ApiResult;
-use Error;
 use Exception;
-use JsonException;
 use Throwable;
 
 class OpenAiApi
