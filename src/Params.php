@@ -87,6 +87,5 @@ class Params extends Base
             $this->deleteParams();
             exit(0);
         }
-
     }
 }

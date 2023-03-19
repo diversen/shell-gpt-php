@@ -1,7 +1,5 @@
 # shell-gpt-php
 
-This is heavily based on [shell-gpt](https://github.com/TheR1D/shell_gpt)
-
 ## Installation
 
 Download the latest release (it is always here):
@@ -60,7 +58,14 @@ Something more like ChatGPT (gpt-3.5-turbo model)
 
     Type 'exit' to exit. 'save' to save
     You: Type something ...
+
+### Set params
+
+Save some model parameters that will override default params
+But not parameters that are set in the command line. 
     
+    shgpt params -h
+
 ### Show token usage
 
     shgpt usage
