@@ -15,13 +15,6 @@ class ApiResult
         $this->result = json_decode($json, true);
     }
 
-    public function setResultAsText(string $text, int $tokens_used = 0)
-    {
-        $this->tokens_used = $tokens_used;
-        $this->content = $text;
-    }
-
-
     public function setCompletions()
     {
         $this->tokens_used = $this->result["usage"]["total_tokens"] ?? '0';

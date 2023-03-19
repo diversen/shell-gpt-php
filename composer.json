@@ -20,5 +20,8 @@
     "require": {
         "diversen/minimal-cli-framework": "^7.0",
         "diversen/php-cli-spinners": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
     }
 }

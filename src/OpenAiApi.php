@@ -104,7 +104,6 @@ class OpenAiApi
             $api_result->setResult($result);
             $api_result->setChatCompletions();
         } catch (Throwable $e) {
-
             $api_result->error_code = $e->getCode();
             $api_result->content = $e->getMessage();
         }
@@ -112,8 +111,40 @@ class OpenAiApi
         return $api_result;
     }
 
-    public function openAiStream(string $endpoint, array $params, callable $callback)
+    public function getChatCompletionsStream(array $params): ApiResult
     {
+        $result = new ApiResult();
+
+        $tokens = Tokens::estimate(json_encode($params['messages']), 'max');
+        $complete_response = '';
+
+        try {
+            $endpoint = 'https://api.openai.com/v1/chat/completions';
+            $this->openAiStream($endpoint, $params, function ($content) use (&$complete_response) {
+                $complete_response .= $content;
+                echo $content;
+            });
+        } catch (Throwable $e) {
+            $result->content = $e->getMessage();
+            $result->error_code = $e->getCode();            
+            return $result;
+        }
+
+        $assistant = ['role' => 'assistant', 'text' => $complete_response];
+        $json_assistant = json_encode($assistant, true);
+        $tokens += Tokens::estimate($json_assistant, 'max');
+
+        $result->content = $complete_response;
+        $result->tokens_used = $tokens;
+
+        return $result;
+    }
+
+    private function openAiStream(string $endpoint, array $params, callable $callback)
+    {
+
+        $params['stream'] = true;
+
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         $headers[] = 'Authorization: Bearer ' . $this->api_key;

@@ -6,8 +6,6 @@ use Diversen\Cli\Utils;
 use Diversen\GPT\OpenAiApi;
 use Diversen\GPT\ApiResult;
 use Diversen\Spinner;
-use Diversen\GPT\Tokens;
-use Throwable;
 
 class Base
 {
@@ -44,15 +42,25 @@ class Base
         }
     }
 
-    public function getApiKey()
+    public function getApiKeyStr(): ?string
     {
         $file = $this->base_dir . '/api_key.txt';
         if (file_exists($file)) {
             return trim(file_get_contents($file));
         }
+        return null;
+    }
 
-        print("No openAI API key found. Use 'shgpt key' to set it." . PHP_EOL);
-        exit(1);
+    public function getApiKey()
+    {
+        $key = $this->getApiKeyStr();
+        if (!$key) {
+            print("No openAI API key found. Use 'shgpt key' to set it." . PHP_EOL);
+            exit(1);
+        }
+
+        return $key;
+
     }
 
     public function getBaseParams(\Diversen\ParseArgv $parse_argv)
@@ -113,32 +121,11 @@ class Base
 
     public function getChatCompletionsStream(array $params): ApiResult
     {
-        $result = new ApiResult();
-        $params['stream'] = true;
         $openai_api = new OpenAiApi($this->getApiKey());
-        $endpoint = 'https://api.openai.com/v1/chat/completions';
 
-        $tokens = Tokens::estimate_tokens(json_encode($params['messages']), 'max');
-        $complete_response = '';
-
-        try {
-            $openai_api->openAiStream($endpoint, $params, function ($content) use (&$complete_response) {
-                $complete_response .= $content;
-                echo $content;
-            });
-        } catch (Throwable $e) {
-            $result->error_code = $e->getCode();
-            $result->content = $e->getMessage();
-            return $result;
-        }
-
-        $assistant = ['role' => 'assistant', 'text' => $complete_response];
-        $json_assistent = json_encode($assistant, true);
-        $tokens += Tokens::estimate_tokens($json_assistent, 'max');
-        $this->logTokensUsed($tokens);
-
-        $result->setResultAsText($complete_response, $tokens);
-
+        var_export($params); exit;
+        $result = $openai_api->getChatCompletionsStream($params);
+        $this->logTokensUsed($result->tokens_used);
         return $result;
     }
 

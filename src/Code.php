@@ -28,7 +28,8 @@ class Code extends Base
 
         $params = $this->getBaseParams($parse_argv);
         $prompt = $this->getPromptArgument($parse_argv);
-        $params['prompt'] = $prompt . '. Provide only code as output.';
+        $prompt .= '. Provide only code as output.';
+        $params['prompt'] = $prompt;
 
         $result = $this->getCompletions($params);
         $text = $result->content;

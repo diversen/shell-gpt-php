@@ -4,7 +4,7 @@ namespace Diversen\GPT;
 
 class Tokens
 {
-    public static function estimate_tokens(string $text, string $method = "max"): int
+    public static function estimate(string $text, string $method = "max"): int
     {
         // method can be "average", "words", "chars", "max", "min", defaults to "max"
         // "average" is the average of words and chars
