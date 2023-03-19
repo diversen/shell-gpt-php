@@ -23,14 +23,16 @@ use Diversen\GPT\Code;
 use Diversen\GPT\Dialog;
 use Diversen\GPT\Usage;
 use Diversen\GPT\Key;
+use Diversen\GPT\Params;
 
 
 $minimal_cli = new MinimalCli();
-$minimal_cli->header = "shgpt (Shell GTP for PHP - v1.0.7)";
+$minimal_cli->header = "shgpt (Shell GTP for PHP - v1.0.8)";
 $minimal_cli->addCommandClass('shell', Shell::class);
 $minimal_cli->addCommandClass('chat', Chat::class);
 $minimal_cli->addCommandClass('code', Code::class);
 $minimal_cli->addCommandClass('dialog', Dialog::class);
 $minimal_cli->addCommandClass('usage', Usage::class);
 $minimal_cli->addCommandClass('key', Key::class);
+$minimal_cli->addCommandClass('params', Params::class);
 $minimal_cli->runMain();

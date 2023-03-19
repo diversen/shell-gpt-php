@@ -46,7 +46,6 @@ class Dialog extends Base
 
         $params = $this->getBaseParams($parse_argv);
         $params['model'] = 'gpt-3.5-turbo';
-
         $params['messages'] = [];
         print("Type 'exit' to exit. 'save' to save" . PHP_EOL);
         while (true) {
