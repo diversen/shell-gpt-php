@@ -30,6 +30,15 @@ Set (or change) API key
 
     shgpt key
 
+### Create a dialog
+
+Something like ChatGPT (gpt-3.5-turbo model). Meaining that the context is loaded from the previous response.
+
+    Type 'exit' to exit. 'save' to save
+    You: Say "hello world"
+    Assistant: Hello world!
+    You: ...
+
 ### Generate a shell command: 
 
     shgpt shell "Command to search replace in files recursive in current directory"
@@ -47,22 +56,15 @@ Add the -e flag to execute the command:
     shgpt code "Can you make a simple HTML template?" > index.html
     more index.html
 
-### Human questions with the GPT:
+### Questions
 
     shgpt chat "How do you say hello in spanish?"
     # -> "Hola"
 
-### Create a dialog (ChatGPT)
-
-Something more like ChatGPT (gpt-3.5-turbo model)
-
-    Type 'exit' to exit. 'save' to save
-    You: Type something ...
-
 ### Set params
 
-Save some model parameters that will override default params
-But not parameters that are set in the command line. 
+Save some model parameters that will override default params.
+But not parameters that exists on the command line. 
     
     shgpt params -h
 
