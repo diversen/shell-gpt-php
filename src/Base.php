@@ -122,8 +122,6 @@ class Base
     public function getChatCompletionsStream(array $params): ApiResult
     {
         $openai_api = new OpenAiApi($this->getApiKey());
-
-        var_export($params); exit;
         $result = $openai_api->getChatCompletionsStream($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;

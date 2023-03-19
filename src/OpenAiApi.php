@@ -10,12 +10,19 @@ class OpenAiApi
 {
 
     private string $api_key = '';
-    private $timeout = 120;
+    private int $timeout = 120;
+    private int $stream_sleep = 100000;
 
-    public function __construct($api_key, $timeout = 120)
+    /**
+     * @param string $api_key
+     * @param int $timeout request timeout in seconds
+     * @param int $stream_sleep sleep time in microseconds between stream reads
+     */
+    public function __construct(string $api_key, int $timeout = 120, int $stream_sleep = 100000)
     {
         $this->api_key = $api_key;
         $this->timeout = $timeout;
+        $this->stream_sleep = $stream_sleep;
     }
 
     private function parseHeaders($headers)
@@ -183,7 +190,7 @@ class OpenAiApi
             if ($finish_reason) {
                 break;
             }
-            usleep(100000);
+            usleep($this->stream_sleep);
         }
     }
 }
