@@ -9,6 +9,7 @@ use Throwable;
 class OpenAiApi
 {
 
+    private string $base_path = 'https://api.openai.com/v1';
     private string $api_key = '';
     private int $timeout = 120;
     private int $stream_sleep = 100000;
@@ -86,7 +87,7 @@ class OpenAiApi
         $api_result = new ApiResult();
 
         try {
-            $endpoint = 'https://api.openai.com/v1/completions';
+            $endpoint = $this->base_path . '/completions';
             $result = $this->openAiRequest($endpoint, $params);
 
             $api_result->setResult($result);
@@ -105,7 +106,7 @@ class OpenAiApi
         $api_result = new ApiResult();
 
         try {
-            $endpoint = 'https://api.openai.com/v1/chat/completions';
+            $endpoint = $this->base_path . '/chat/completions';
             $result = $this->openAiRequest($endpoint, $params);
 
             $api_result->setResult($result);
@@ -126,7 +127,7 @@ class OpenAiApi
         $complete_response = '';
 
         try {
-            $endpoint = 'https://api.openai.com/v1/chat/completions';
+            $endpoint = $this->base_path . '/chat/completions';
             $this->openAiStream($endpoint, $params, function ($content) use (&$complete_response) {
                 $complete_response .= $content;
                 echo $content;

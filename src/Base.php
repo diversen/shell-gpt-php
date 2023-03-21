@@ -7,7 +7,6 @@ namespace Diversen\GPT;
 use Diversen\Cli\Utils;
 use Diversen\GPT\OpenAiApi;
 use Diversen\GPT\ApiResult;
-use Diversen\Spinner;
 
 class Base
 {
@@ -26,7 +25,6 @@ class Base
     ];
 
     public array $default_options = [
-        "model" => "text-davinci-003",
         "max_tokens" => 2048,
         "temperature" => 1,
         "top_p" => 0.5,
@@ -93,10 +91,6 @@ class Base
     {
 
         $options = $this->getDefaultOptions();
-
-        if ($parse_argv->getOption('model')) {
-            $options['model'] = $parse_argv->getOption('model');
-        }
 
         if ($parse_argv->getOption('top_p')) {
             $options['top_p'] = (float) $parse_argv->getOption('top_p');

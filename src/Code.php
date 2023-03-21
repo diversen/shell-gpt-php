@@ -30,6 +30,7 @@ class Code extends Base
         $prompt = $this->getPromptArgument($parse_argv);
         $prompt .= '. Provide only code as output.';
         $params['prompt'] = $prompt;
+        $params['model'] = 'text-davinci-003';
 
         $result = $this->getCompletions($params);
         $text = $result->content;

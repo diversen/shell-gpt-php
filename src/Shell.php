@@ -35,6 +35,7 @@ class Shell extends Base
         $shell = getenv('SHELL') ?? 'unknown';
         $prompt .= ". Provide only shell code as output. Current shell is: $shell";
         $params['prompt'] = $prompt;
+        $params['model'] = 'text-davinci-003';
 
         $result = $this->getCompletions($params);
         $text = $result->content;

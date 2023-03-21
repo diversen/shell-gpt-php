@@ -56,11 +56,6 @@ Add the -e flag to execute the command:
     shgpt code "Can you make a simple HTML template?" > index.html
     more index.html
 
-### Questions
-
-    shgpt chat "How do you say hello in spanish?"
-    # -> "Hola"
-
 ### Set params
 
 Save some model parameters that will override default params.
