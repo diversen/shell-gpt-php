@@ -40,7 +40,7 @@ class Key extends Base
             exit(1);
         }
 
-        print($result->content) . PHP_EOL;
+        print ($result->content) . PHP_EOL;
         exit(0);
     }
 

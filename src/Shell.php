@@ -31,7 +31,7 @@ class Shell extends Base
 
         $params = $this->getBaseParams($parse_argv);
         $prompt = $this->getPromptArgument($parse_argv);
-        
+
         $shell = getenv('SHELL') ?? 'unknown';
         $prompt .= ". Provide only shell code as output. Current shell is: $shell";
         $params['prompt'] = $prompt;

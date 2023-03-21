@@ -25,7 +25,7 @@ class Chat extends Base
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
-        
+
         $params = $this->getBaseParams($parse_argv);
         $prompt = $this->getPromptArgument($parse_argv);
 

@@ -7,11 +7,9 @@ use \Diversen\GPT\Base;
 class Params extends Base
 {
 
-
     public function __construct()
     {
         parent::__construct();
-        
     }
 
     public function getCommand()
@@ -26,8 +24,9 @@ class Params extends Base
         ];
     }
 
-    private function showParams() {
-        
+    private function showParams()
+    {
+
         if (!file_exists($this->params_file)) {
             echo "No config file found. Create one with the command: shell-gpt params --set" . PHP_EOL;
             exit(1);
@@ -35,19 +34,19 @@ class Params extends Base
 
         $json_params = file_get_contents($this->params_file);
         echo $json_params . PHP_EOL;
-
     }
 
-    private function setParams() {
+    private function setParams()
+    {
 
         $params = [];
         $options = $this->default_options;
         unset($options['n'], $options['stream']);
 
-        foreach($options as $key => $option) {
+        foreach ($options as $key => $option) {
             $description = $this->base_options['--' . $key];
-            print($description . PHP_EOL) ;
-            
+            print($description . PHP_EOL);
+
             $value = $this->utils->readSingleline("Set $key [current: $option] to: ");
             if (!$value) {
                 $params[$key] = $this->default_options[$key];
@@ -56,7 +55,7 @@ class Params extends Base
             }
         }
 
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             $params[$key] = $this->castOptions($key, $value);
         }
 
@@ -64,7 +63,8 @@ class Params extends Base
         file_put_contents($this->params_file, $json);
     }
 
-    private function deleteParams() {
+    private function deleteParams()
+    {
         if (file_exists($this->params_file)) {
             unlink($this->params_file);
         }
@@ -87,5 +87,7 @@ class Params extends Base
             $this->deleteParams();
             exit(0);
         }
+
+        $this->showParams();
     }
 }

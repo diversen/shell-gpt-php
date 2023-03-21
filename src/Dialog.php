@@ -37,7 +37,8 @@ class Dialog extends Base
         $this->writeToFile($dialog);
     }
 
-    public function runCommand(\Diversen\ParseArgv $parse_argv) {
+    public function runCommand(\Diversen\ParseArgv $parse_argv)
+    {
         $this->runCommandStream($parse_argv);
     }
 
@@ -70,7 +71,7 @@ class Dialog extends Base
 
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
-                print($result->content) . PHP_EOL;
+                print ($result->content) . PHP_EOL;
                 exit(1);
             }
 

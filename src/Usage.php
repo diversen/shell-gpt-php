@@ -6,7 +6,8 @@ use \Diversen\GPT\Base;
 
 class Usage extends Base
 {
-    public function getTokensUsed() {
+    public function getTokensUsed()
+    {
         $file = $this->base_dir . '/tokens_used.txt';
         if (!file_exists($file)) {
             return 0;
@@ -24,7 +25,7 @@ class Usage extends Base
         $last_7_days = time() - (7 * 24 * 60 * 60);
         $last_30_days = time() - (30 * 24 * 60 * 60);
         $last_90_days = time() - (90 * 24 * 60 * 60);
-        
+
         foreach ($lines as $line) {
             if (!$line) {
                 continue;
@@ -65,7 +66,7 @@ class Usage extends Base
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
-        
+
         $usage = $this->getTokensUsed();
         if (!$usage) {
             echo '0 usage of tokens' . PHP_EOL;
@@ -74,6 +75,5 @@ class Usage extends Base
         foreach ($usage as $key => $value) {
             echo $key . ': ' . $value . PHP_EOL;
         }
-        
     }
 }

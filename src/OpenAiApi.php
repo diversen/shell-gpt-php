@@ -133,7 +133,7 @@ class OpenAiApi
             });
         } catch (Throwable $e) {
             $result->content = $e->getMessage();
-            $result->error_code = $e->getCode();            
+            $result->error_code = $e->getCode();
             return $result;
         }
 
@@ -175,7 +175,7 @@ class OpenAiApi
         }
 
         while (!feof($stream)) {
-            
+
             $line = fgets($stream);
             $line = explode('data: ', $line)[1] ?? '';
             if (empty($line)) {
