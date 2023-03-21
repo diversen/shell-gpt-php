@@ -26,8 +26,8 @@ class Base
     ];
 
     public array $default_options = [
-        "model" => "gpt-3.5-turbo",
-        "max_tokens" => 4096,
+        "model" => "text-davinci-003",
+        "max_tokens" => 2048,
         "temperature" => 1,
         "top_p" => 0.5,
         "n" => 1,
