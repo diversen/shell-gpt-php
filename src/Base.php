@@ -16,7 +16,6 @@ class Base
     public string $params_file = '';
 
     public array $base_options = [
-        '--model' => 'This does not affect the dialog command. See models: https://beta.openai.com/docs/api-reference/models',
         '--max_tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top_p' => 'Top p of output. Between 0 and 1. Higher value is more random',
