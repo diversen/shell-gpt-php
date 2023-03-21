@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Diversen\GPT;
 
 use Diversen\Cli\Utils;

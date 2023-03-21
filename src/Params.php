@@ -40,7 +40,7 @@ class Params extends Base
     {
 
         $params = [];
-        $options = $this->default_options;
+        $options = $this->getDefaultOptions();
         unset($options['n'], $options['stream']);
 
         foreach ($options as $key => $option) {
