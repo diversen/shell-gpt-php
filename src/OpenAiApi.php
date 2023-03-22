@@ -178,17 +178,25 @@ class OpenAiApi
         while (!feof($stream)) {
 
             $line = fgets($stream);
-            $line = explode('data: ', $line)[1] ?? '';
-            if (empty($line)) {
+            $json_str = explode('data: ', $line)[1] ?? '';
+            $message = explode('data: ', $line)[0] ?? '';
+
+            if (strpos($message, '[DONE]') === 0) {
+                fclose($stream);
+                break;
+            }
+
+            if (empty($json_str)) {
                 continue;
             }
 
-            $json = json_decode($line, true);
-
+            $json = json_decode($json_str, true);
             $content = $json['choices'][0]['delta']['content'] ?? '';
+
             $callback($content);
             $finish_reason = $json['finish_reason'] ?? '';
             if ($finish_reason) {
+                fclose($stream);
                 break;
             }
             usleep($this->stream_sleep);
