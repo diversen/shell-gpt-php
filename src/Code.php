@@ -36,9 +36,9 @@ class Code extends Base
         $text = $result->content;
 
         print($text . PHP_EOL);
-
+        
         if ($result->isError()) {
-            exit(1);
+            return 1;
         }
     }
 }

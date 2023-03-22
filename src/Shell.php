@@ -49,7 +49,7 @@ class Shell extends Base
         }
 
         if ($result->isError()) {
-            exit(1);
+            return 1;
         }
     }
 }

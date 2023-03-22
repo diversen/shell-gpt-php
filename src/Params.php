@@ -75,19 +75,20 @@ class Params extends Base
 
         if ($parse_argv->getOption('show')) {
             $this->showParams();
-            exit(0);
+            return 0;
         }
 
         if ($parse_argv->getOption('set')) {
             $this->setParams();
-            exit(0);
+            return 0;
         }
 
         if ($parse_argv->getOption('delete')) {
             $this->deleteParams();
-            exit(0);
+            return 0;
         }
 
         $this->showParams();
+
     }
 }

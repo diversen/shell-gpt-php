@@ -72,7 +72,7 @@ class Dialog extends Base
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
                 print ($result->content) . PHP_EOL;
-                exit(1);
+                return 1;
             }
 
             $content = $result->content;
@@ -84,7 +84,5 @@ class Dialog extends Base
                 'role' => 'assistant', 'content' => $content,
             ];
         }
-
-        exit(0);
     }
 }

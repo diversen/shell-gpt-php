@@ -27,7 +27,7 @@ class Key extends Base
         $res = file_put_contents($file, $api_key);
         if ($res === false) {
             print("Could not write API key to file" . PHP_EOL);
-            exit(1);
+            return 1;
         }
 
         $params = $this->default_options;
@@ -37,11 +37,10 @@ class Key extends Base
         if ($result->isError()) {
             $text = $result->content;
             print($text . PHP_EOL);
-            exit(1);
+            return 1;
         }
 
         print ($result->content) . PHP_EOL;
-        exit(0);
     }
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
