@@ -26,6 +26,11 @@ class Dialog extends Base
         file_put_contents($file, $content);
     }
 
+    private function exit()
+    {
+        return 0;
+    }
+
     private function save(array $params)
     {
         $dialog = '';
@@ -35,6 +40,7 @@ class Dialog extends Base
             $dialog .=  ucfirst($role) . ': ' . $content . PHP_EOL . PHP_EOL;
         }
         $this->writeToFile($dialog);
+        return 0;
     }
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
@@ -48,23 +54,28 @@ class Dialog extends Base
         $params = $this->getBaseParams($parse_argv);
         $params['model'] = 'gpt-3.5-turbo';
         $params['messages'] = [];
-        print("Type 'exit' to exit. 'save' to save" . PHP_EOL);
+        print("Type '/exit' to exit. '/save' to save to file" . PHP_EOL);
         while (true) {
 
             $message = $this->utils->readSingleline('You: ');
-
-            if ($message === 'exit') {
-                break;
-            }
-
-            if ($message === 'save') {
-                $this->save($params);
-                return 0;
-            }
-
             $params['messages'][] = [
                 'role' => 'user', 'content' => $message,
             ];
+
+            // Check if $message is a command
+            if (substr($message, 0, 1) === '/') {
+                $command = substr($message, 1);
+                $command = explode(' ', $command);
+                $command = $command[0];
+                if (method_exists($this, $command)) {
+                    $res = $this->$command($params);
+
+                    // Only exit if exit returns 0
+                    if ($res === 0) {
+                        return 0;
+                    }
+                }
+            }
 
             print(PHP_EOL);
             print("Assistant: ");
