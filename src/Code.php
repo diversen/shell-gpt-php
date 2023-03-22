@@ -28,6 +28,11 @@ class Code extends Base
 
         $params = $this->getBaseParams($parse_argv);
         $prompt = $this->getPromptArgument($parse_argv);
+        if ($prompt === false) {
+            print("No prompt given. Please specify your prompt. " . PHP_EOL);
+            return 10;
+        }
+
         $prompt .= '. Provide only code as output.';
         $params['prompt'] = $prompt;
         $params['model'] = 'text-davinci-003';

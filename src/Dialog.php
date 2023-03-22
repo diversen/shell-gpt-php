@@ -59,7 +59,7 @@ class Dialog extends Base
 
             if ($message === 'save') {
                 $this->save($params);
-                exit(0);
+                return 0;
             }
 
             $params['messages'][] = [

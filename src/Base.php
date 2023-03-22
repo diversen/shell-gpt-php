@@ -144,8 +144,7 @@ class Base
     public function getPromptArgument(\Diversen\ParseArgv $parse_argv)
     {
         if (!$parse_argv->getArgument(0)) {
-            print("No prompt given. Please specify your prompt. " . PHP_EOL);
-            exit(1);
+            return false;
         }
 
         $prompt = trim(implode(" ", $parse_argv->arguments));

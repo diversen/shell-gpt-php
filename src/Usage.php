@@ -70,10 +70,12 @@ class Usage extends Base
         $usage = $this->getTokensUsed();
         if (!$usage) {
             echo '0 usage of tokens' . PHP_EOL;
-            return;
+            return 0;
         }
         foreach ($usage as $key => $value) {
             echo $key . ': ' . $value . PHP_EOL;
         }
+
+        return 0;
     }
 }
