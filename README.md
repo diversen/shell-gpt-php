@@ -32,7 +32,7 @@ Set (or change) API key
 
 ### Create a dialog
 
-Something like ChatGPT (gpt-3.5-turbo model). Meaining that the context is loaded from the previous response.
+Something like ChatGPT (gpt-3.5-turbo model). Meaining that the context is loaded from the previous questions / answers.
 
     Type 'exit' to exit. 'save' to save
     You: Say "hello world"
@@ -41,10 +41,13 @@ Something like ChatGPT (gpt-3.5-turbo model). Meaining that the context is loade
 
 ### Generate a shell command: 
 
+Command optimized for shell commands.
+
     shgpt shell "Command to search replace in files recursive in current directory"
     # -> find . -type f -exec sed -i 's/search/replace/g' {} \;
 
-### Execute a shell command
+    shgpt shell "command to change origin of a git repo"
+    # -> git remote set-url origin <new url>
 
 Add the -e flag to execute the command:
 
@@ -53,17 +56,28 @@ Add the -e flag to execute the command:
 
 ### Generating code:
 
+Command to generate code snippets.
+
     shgpt code "Can you make a simple HTML template?" > index.html
     more index.html
+
+## Ask any question
+
+    shgpt question "Extract directories from this list of files: $(ls -l)"
+    # -> bin, src, tests, vendor
 
 ### Set params
 
 Save some model parameters that will override default params.
 But not parameters that exists on the command line. 
+
+E.g. if you set the temperature to 2.0 you will get kind of crazy results
     
     shgpt params -h
 
 ### Show token usage
+
+Last 24 hours, last 7 days, last 30 days and last 90 days. 
 
     shgpt usage
 
