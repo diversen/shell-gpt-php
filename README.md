@@ -10,7 +10,7 @@ sudo cp -f shgpt.phar /usr/local/bin/shgpt
 sudo chmod +x /usr/local/bin/shgpt
 ```
 
-Or build it yourself:
+### Build
     
 You will need to install `phar-composer`. 
 
