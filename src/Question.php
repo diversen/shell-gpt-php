@@ -15,7 +15,7 @@ class Question extends Base
     public function getCommand()
     {
         return [
-            'usage' => 'Get a answer to any question (most likely).',
+            'usage' => 'Get an answer to any question (most likely).',
             'options' => $this->base_options,
             'arguments' => [
                 'Prompt' => 'Ask any question.',
