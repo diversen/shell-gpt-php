@@ -4,7 +4,7 @@ namespace Diversen\GPT;
 
 use \Diversen\GPT\Base;
 
-class Ask extends Base
+class Question extends Base
 {
 
     public function __construct()

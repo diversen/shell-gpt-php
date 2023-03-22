@@ -72,7 +72,7 @@ class Params extends Base
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
-
+        
         if ($parse_argv->getOption('show')) {
             $this->showParams();
             return 0;
