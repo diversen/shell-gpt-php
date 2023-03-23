@@ -35,7 +35,7 @@ class Base
     public function __construct()
     {
         $this->utils = new Utils();
-        $this->base_dir = getenv("HOME") . '/.config/shell-gpt';
+        $this->base_dir = getenv("HOME") . '/.config/shell-gpt-php';
         if (!file_exists($this->base_dir)) {
             mkdir($this->base_dir, 0755, true);
         }
@@ -45,6 +45,7 @@ class Base
         }
 
         $this->params_file = $this->base_dir . '/params.json';
+
     }
 
     public function castOptions(string $key, mixed $value)
