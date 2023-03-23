@@ -11,6 +11,7 @@ class Base
 
     public ?Utils $utils = null;
     public string $base_dir = '';
+    public string $data_dir = '';
     public string $params_file = '';
 
     public array $base_options = [
@@ -37,6 +38,10 @@ class Base
         $this->base_dir = getenv("HOME") . '/.config/shell-gpt';
         if (!file_exists($this->base_dir)) {
             mkdir($this->base_dir, 0755, true);
+        }
+        $this->data_dir = $this->base_dir . '/data';
+        if (!file_exists($this->data_dir)) {
+            mkdir($this->data_dir, 0755, true);
         }
 
         $this->params_file = $this->base_dir . '/params.json';
