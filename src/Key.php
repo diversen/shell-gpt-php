@@ -31,6 +31,7 @@ class Key extends Base
         }
 
         $params = $this->default_options;
+        $params['model'] = 'text-davinci-003';
         $params['prompt'] = "Say 'API key seems to work!' and nothing more. Just a test";
         $result = $this->getCompletions($params);
 
