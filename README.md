@@ -20,6 +20,8 @@ Set (or change) API key
 
 ### Create a dialog
 
+    shgpt dialog
+
 Something like ChatGPT (gpt-3.5-turbo model). Meaning that the answer is extrapolated from the previous questions and answers.
 
     You: Say "hello world"
