@@ -2,7 +2,7 @@
     
 You will need to install `phar-composer`. 
 
-Clone this repo and run [build.sh](build.sh)
+Clone this repo and run [build.sh](../build.sh)
 
 You can specify a tag:
 
