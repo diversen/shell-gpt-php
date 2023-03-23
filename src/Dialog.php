@@ -50,6 +50,7 @@ class Dialog extends Base
         $content = $this->getSaveString($params);
         $file = $this->utils->readSingleline('File: ');
         file_put_contents($file, $content);
+        print('Dialog saved as plain text to: ' . $file . PHP_EOL);
         return 0;
     }
 
@@ -110,7 +111,7 @@ class Dialog extends Base
 
                 // exit on 0
                 // continue on 1
-                // if not 0 or 1, then it is a message
+                // if NOT 0 or 1, then it is a message
 
                 $res = $this->$command($params);
                 if ($res === 0) {
@@ -121,7 +122,7 @@ class Dialog extends Base
                     $file = $this->data_dir . '/dialog_' . $date . '.json';
                     try {
                         file_put_contents($file, json_encode($params['messages'], JSON_PRETTY_PRINT));
-                        print('Dialog saved to ' . $file . PHP_EOL);
+                        print('Dialog saved as JSON to: ' . $file . PHP_EOL);
                     } catch (Throwable $e) {
                         print($e->getMessage() . PHP_EOL);
                         return 1;
@@ -141,14 +142,17 @@ class Dialog extends Base
                 'role' => 'user', 'content' => $message,
             ];
 
-            print(PHP_EOL);
-            print("Assistant: ");
+            
 
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
-                print ($result->content) . PHP_EOL;
-                return 1;
+                print ($this->utils->colorOutput($result->content, 'error')) . PHP_EOL;
+                print ("You may try to check your internet connection. Or try again later." . PHP_EOL);
+                continue;
             }
+
+            print(PHP_EOL);
+            print("Assistant: ");
 
             $content = $result->content;
             $tokens = $result->tokens_used;
