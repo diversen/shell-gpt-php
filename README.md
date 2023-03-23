@@ -10,19 +10,7 @@ sudo cp -f shgpt.phar /usr/local/bin/shgpt
 sudo chmod +x /usr/local/bin/shgpt
 ```
 
-### Build
-    
-You will need to install `phar-composer`. 
-
-Clone this repo and run [build.sh](build.sh)
-
-You can specify a tag:
-
-    ./build.sh dev-main
-
-Latest tag:
-
-    ./build.sh
+[Or build it yourself](docs/BUILD.md)
 
 ## Set key
 
@@ -32,12 +20,24 @@ Set (or change) API key
 
 ### Create a dialog
 
-Something like ChatGPT (gpt-3.5-turbo model). Meaining that the context is loaded from the previous questions / answers.
+Something like ChatGPT (gpt-3.5-turbo model). Meaning that the answer is extrapolated from the previous questions and answers.
 
-    Type 'exit' to exit. 'save' to save
     You: Say "hello world"
     Assistant: Hello world!
     You: ...
+
+Some sub commands are available in the dialog mode:
+
+    Available commands: 
+
+    save - Save dialog to file
+    exec - Execute a command and feed the output to the dialog
+    exit - Exit the dialog (or ctrl-c)
+    comm - Show all commands
+
+    Type a message to ChatGPT. Maybe 'hello world!' You may also use above commands.
+
+All dialogs are auto-saved on exit to the directory `~/.config/shell-gpt-php/data/`.
 
 ### Generate a shell command: 
 
