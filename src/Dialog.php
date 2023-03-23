@@ -17,7 +17,6 @@ class Dialog extends Base
     public function __construct()
     {
         parent::__construct();
-
     }
 
     public function getCommand()
@@ -78,9 +77,9 @@ class Dialog extends Base
 
         $command_help = 'Available commands: ' . PHP_EOL . PHP_EOL;
         foreach ($this->commands as $command => $help) {
-            $command_help.= $this->utils->colorOutput($command, 'notice') . ' - ' . $help . PHP_EOL;
+            $command_help .= $this->utils->colorOutput($command, 'notice') . ' - ' . $help . PHP_EOL;
         }
-        print($command_help) . PHP_EOL;
+        print ($command_help) . PHP_EOL;
         print("Type a message to ChatGPT. Maybe 'hello world!' You may also use above commands. " . PHP_EOL);
         return 1;
     }
@@ -99,7 +98,7 @@ class Dialog extends Base
 
         $this->comm();
         $command_names = array_keys($this->commands);
-        
+
         while (true) {
 
             $message = $this->utils->readSingleline('You: ');
@@ -127,7 +126,6 @@ class Dialog extends Base
                         print($e->getMessage() . PHP_EOL);
                         return 1;
                     }
-                    
                     return 0;
                 }
 
@@ -142,12 +140,11 @@ class Dialog extends Base
                 'role' => 'user', 'content' => $message,
             ];
 
-            
 
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
                 print ($this->utils->colorOutput($result->content, 'error')) . PHP_EOL;
-                print ("You may try to check your internet connection. You may also examine if the request you sent was too big. Each models has a max number of tokens that can be sent. " . PHP_EOL);
+                print("You may try to check your internet connection. You may also examine if the request you sent was too big. Each models has a max number of tokens that can be sent. " . PHP_EOL);
                 continue;
             }
 
