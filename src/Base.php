@@ -45,7 +45,6 @@ class Base
         }
 
         $this->params_file = $this->base_dir . '/params.json';
-
     }
 
     public function castOptions(string $key, mixed $value)
