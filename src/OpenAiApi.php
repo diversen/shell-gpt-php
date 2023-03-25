@@ -11,15 +11,15 @@ class OpenAiApi
 
     private string $base_path = 'https://api.openai.com/v1';
     private string $api_key = '';
-    private int $timeout = 120;
+    private float $timeout = 2;
     private int $stream_sleep = 100000;
 
     /**
      * @param string $api_key
      * @param int $timeout request timeout in seconds
-     * @param int $stream_sleep sleep time in microseconds between stream reads
+     * @param int $stream_sleep sleep time in seconds between stream reads
      */
-    public function __construct(string $api_key, int $timeout = 120, float $stream_sleep = 0.1)
+    public function __construct(string $api_key, float $timeout = 2, float $stream_sleep = 0.1)
     {
         $this->api_key = $api_key;
         $this->timeout = $timeout;

@@ -23,7 +23,7 @@ class Dialog extends Base
     {
         return [
             'usage' => 'Start a dialog.',
-            'options' => $this->base_options,
+            'options' => [...$this->base_options],
         ];
     }
 
@@ -48,6 +48,9 @@ class Dialog extends Base
 
         $content = $this->getSaveString($params);
         $file = $this->utils->readSingleline('File: ');
+        if (empty($file)) {
+            $file = 'no-title.txt';
+        }
         file_put_contents($file, $content);
         print('Dialog saved as plain text to: ' . $file . PHP_EOL);
         return 0;
@@ -112,7 +115,7 @@ class Dialog extends Base
         $this->comm();
         $command_names = array_keys($this->commands);
 
-        
+
         while (true) {
 
             if (function_exists('pcntl_signal')) {
@@ -123,7 +126,7 @@ class Dialog extends Base
                     exit(0);
                 });
             }
-            
+
 
             $message = $this->utils->readSingleline('You: ');
 
