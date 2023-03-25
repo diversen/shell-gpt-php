@@ -89,6 +89,19 @@ class Dialog extends Base
         $this->runCommandStream($parse_argv);
     }
 
+    public function saveMessages($params)
+    {
+        $date = date('Y-m-d_H-i-s');
+        $file = $this->data_dir . '/dialog_' . $date . '.json';
+        try {
+            file_put_contents($file, json_encode($params['messages'], JSON_PRETTY_PRINT));
+            print('Dialog saved as JSON to: ' . $file . PHP_EOL);
+        } catch (Throwable $e) {
+            print($e->getMessage() . PHP_EOL);
+            return 1;
+        }
+    }
+
     public function runCommandStream(\Diversen\ParseArgv $parse_argv)
     {
 
@@ -99,7 +112,18 @@ class Dialog extends Base
         $this->comm();
         $command_names = array_keys($this->commands);
 
+        
         while (true) {
+
+            if (function_exists('pcntl_signal')) {
+                // Use pcntl to handle ctrl-c signal
+                pcntl_async_signals(true);
+                pcntl_signal(SIGINT, function () use ($params) {
+                    $this->saveMessages($params);
+                    exit(0);
+                });
+            }
+            
 
             $message = $this->utils->readSingleline('You: ');
 
@@ -117,15 +141,8 @@ class Dialog extends Base
                     // save dialog to data dir as json file
                     // Make a good name for a log file
                     // Get yyyy-mm-dd_hh-mm-ss
-                    $date = date('Y-m-d_H-i-s');
-                    $file = $this->data_dir . '/dialog_' . $date . '.json';
-                    try {
-                        file_put_contents($file, json_encode($params['messages'], JSON_PRETTY_PRINT));
-                        print('Dialog saved as JSON to: ' . $file . PHP_EOL);
-                    } catch (Throwable $e) {
-                        print($e->getMessage() . PHP_EOL);
-                        return 1;
-                    }
+                    $this->saveMessages($params);
+
                     return 0;
                 }
 

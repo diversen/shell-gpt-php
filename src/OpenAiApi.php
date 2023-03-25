@@ -19,11 +19,12 @@ class OpenAiApi
      * @param int $timeout request timeout in seconds
      * @param int $stream_sleep sleep time in microseconds between stream reads
      */
-    public function __construct(string $api_key, int $timeout = 120, int $stream_sleep = 100000)
+    public function __construct(string $api_key, int $timeout = 120, float $stream_sleep = 0.1)
     {
         $this->api_key = $api_key;
         $this->timeout = $timeout;
-        $this->stream_sleep = $stream_sleep;
+        $this->stream_sleep = $stream_sleep * 1000000;
+        $this->stream_sleep = (int) $this->stream_sleep;
     }
 
     private function parseHeaders($headers)
@@ -150,6 +151,8 @@ class OpenAiApi
 
     private function openAiStream(string $endpoint, array $params, callable $callback)
     {
+
+        
 
         $params['stream'] = true;
 

@@ -18,7 +18,6 @@ class Base
         '--max_tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top_p' => 'Top p of output. Between 0 and 1. Higher value is more random',
-        '--timeout' => 'Timeout in seconds. Default is 60 seconds',
 
     ];
 
@@ -49,7 +48,7 @@ class Base
 
     public function castOptions(string $key, mixed $value)
     {
-        if (in_array($key, ['temperature', 'top_p', 'timeout'])) {
+        if (in_array($key, ['temperature', 'top_p'])) {
             return (float) $value;
         }
         if (in_array($key, ['max_tokens'])) {
@@ -78,6 +77,9 @@ class Base
         return $key;
     }
 
+    /**
+     * Merge default options with options from params file
+     */
     public function getDefaultOptions(): array
     {
         $options = $this->default_options;
@@ -89,6 +91,9 @@ class Base
         return $options;
     }
 
+    /**
+     * Get params from default options and command line options
+     */
     public function getBaseParams(\Diversen\ParseArgv $parse_argv)
     {
 
@@ -115,10 +120,19 @@ class Base
         return $options;
     }
 
+    private function getOpenApi(): OpenAiApi
+    {
+        $openai_api = new OpenAiApi(
+            api_key: $this->getApiKey(), 
+            stream_sleep: 0.05
+        );
+        return $openai_api;
+    } 
+
     public function getCompletions(array $params): ApiResult
     {
 
-        $openai_api = new OpenAiApi($this->getApiKey());
+        $openai_api = $this->getOpenApi();
         $result = $openai_api->getCompletions($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
@@ -127,7 +141,7 @@ class Base
     public function getChatCompletions(array $params): ApiResult
     {
 
-        $openai_api = new OpenAiApi($this->getApiKey());
+        $openai_api = $this->getOpenApi();
         $result = $openai_api->getChatCompletions($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
@@ -135,7 +149,7 @@ class Base
 
     public function getChatCompletionsStream(array $params): ApiResult
     {
-        $openai_api = new OpenAiApi($this->getApiKey());
+        $openai_api = $this->getOpenApi();
         $result = $openai_api->getChatCompletionsStream($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
