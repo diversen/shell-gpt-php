@@ -18,6 +18,7 @@
     ],
     
     "require": {
+        "php": ">=8.1",
         "diversen/minimal-cli-framework": "^7.0",
         "diversen/php-cli-spinners": "^1.0"
     },
