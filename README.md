@@ -20,6 +20,8 @@ Set (or change) API key
 
 ### Create a dialog
 
+    shgpt dialog
+
 Something like ChatGPT (gpt-3.5-turbo model). Meaning that the answer is extrapolated from the previous questions and answers.
 
     You: Say "hello world"
@@ -37,7 +39,7 @@ Some sub commands are available in the dialog mode:
 
     Type a message to ChatGPT. Maybe 'hello world!' You may also use above commands.
 
-All dialogs are auto-saved on exit to the directory `~/.config/shell-gpt-php/data/`.
+All dialogs are auto-saved on exit to the directory `~/.config/shell-gpt-php/data/`
 
 ### Generate a shell command: 
 
