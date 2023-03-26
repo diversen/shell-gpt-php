@@ -163,7 +163,8 @@ class Dialog extends Base
 
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
-                print ($this->utils->colorOutput($result->content, 'error')) . PHP_EOL;
+                print ("Error: ") . PHP_EOL;
+                print ($this->utils->colorOutput($result->error_message, 'error')) . PHP_EOL;
                 print("You may try to check your internet connection. You may also examine if the request you sent was too big. Each models has a max number of tokens that can be sent. " . PHP_EOL);
                 continue;
             }

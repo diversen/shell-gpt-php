@@ -122,7 +122,7 @@ class OpenAiApi
         return $api_result;
     }
 
-    public function getCompletionsStream(string $endpoint,array $params): ApiResult
+    public function getCompletionsStream(string $endpoint, array $params): ApiResult
     {
         $result = new ApiResult();
 
@@ -137,7 +137,6 @@ class OpenAiApi
                 $content = $json['choices'][0]['text'] ?? '';
                 if (!empty(trim($content))) {
                     $first_content = true;
-                    
                 }
                 if ($first_content) {
                     $complete_response .= $content;
@@ -145,7 +144,6 @@ class OpenAiApi
                 }
 
                 $tokens_answer += 1;
-               
             });
         } catch (Throwable $e) {
             $result->error_message = $e->getMessage();
@@ -159,7 +157,7 @@ class OpenAiApi
         return $result;
     }
 
-    public function getChatCompletionsStream(string $endpoint,array $params): ApiResult
+    public function getChatCompletionsStream(string $endpoint, array $params): ApiResult
     {
         $result = new ApiResult();
 
@@ -216,7 +214,12 @@ class OpenAiApi
 
         while (!feof($stream)) {
 
+
             $line = fgets($stream);
+            if ($line === false) {
+                throw new Exception("Error reading data from API endpoint.", 500);
+            }
+            
             $json_str = explode('data: ', $line)[1] ?? '';
             $message = explode('data: ', $line)[0] ?? '';
 
