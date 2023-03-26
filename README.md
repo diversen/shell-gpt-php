@@ -1,5 +1,7 @@
 # shell-gpt-php
 
+![](src/gpt.png)
+
 ## Installation
 
 Download the latest release:
