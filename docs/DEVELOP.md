@@ -10,3 +10,5 @@ Run it:
 
 It is very simple to make a command: 
 Look at e.g. [src/Code.php](../src/Code.php) 
+
+When you have made an command, then add it to: the [bin/shgpt](../bin/shgpt) script. 
