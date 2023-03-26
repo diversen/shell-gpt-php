@@ -6,12 +6,6 @@ use \Diversen\GPT\Base;
 
 class Code extends Base
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function getCommand()
     {
         return [
@@ -38,7 +32,7 @@ class Code extends Base
         $params['model'] = 'text-davinci-003';
 
         $result = $this->getCompletionsStream($params);
-        
+
         if ($result->isError()) {
             echo $result->error_message . PHP_EOL;
             return 1;

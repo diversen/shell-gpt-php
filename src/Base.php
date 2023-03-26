@@ -18,6 +18,7 @@ class Base
         '--max_tokens' => 'Strict length of output (words).',
         '--temperature' => 'Temperature of output. Between 0 and 2. Higher value is more random',
         '--top_p' => 'Top p of output. Between 0 and 1. Higher value is more random',
+        '--presence_penalty' => 'Presence penalty of output. Between -2 and 2. Higher value insures more unique output',
 
     ];
 
@@ -26,6 +27,7 @@ class Base
         "temperature" => 1,
         "top_p" => 0.5,
         "n" => 1,
+        "presence_penalty" => 0,
         "stream" => false,
         // "logprobs" => null,
         // "stop" => "\n",
@@ -48,7 +50,7 @@ class Base
 
     public function castOptions(string $key, mixed $value)
     {
-        if (in_array($key, ['temperature', 'top_p'])) {
+        if (in_array($key, ['temperature', 'top_p', 'presence_penalty'])) {
             return (float) $value;
         }
         if (in_array($key, ['max_tokens'])) {

@@ -7,11 +7,6 @@ use \Diversen\GPT\Base;
 class Prompts extends Base
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function getCommand()
     {
         return [
@@ -20,18 +15,18 @@ class Prompts extends Base
         ];
     }
 
-    public function sanitizeFilename (string $file) {
-        
+    public function sanitizeFilename(string $file)
+    {
+
         // Remove all illegal characters from a filename
         $file = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $file);
         return $file;
-
     }
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
 
-        
+
         // Download this url: https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv
         // And parse it the csv file into an array
         $file = file_get_contents('https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv');
@@ -41,13 +36,13 @@ class Prompts extends Base
         $prompts = [];
         foreach ($lines as $line) {
             $parts = explode(',', $line);
-            
+
             // lowercase the name and replace spaces with dashes
             $parts[0] = str_replace(' ', '_', strtolower($parts[0]));
-            
+
             // Sanitize
             $parts[0] = $this->sanitizeFilename($parts[0]);
-            
+
             $prompts[] = [
                 'name' => $parts[0],
                 'prompt' => $parts[1],
@@ -59,16 +54,16 @@ class Prompts extends Base
             mkdir($this->data_dir . '/prompts');
         }
 
-        foreach($prompts as $prompt) {
+        foreach ($prompts as $prompt) {
             $file = $this->data_dir . '/prompts/' . $prompt['name'] . '.txt';
             file_put_contents($file, $prompt['prompt']);
         }
 
         print("Done. You can now run the following commands:" . PHP_EOL);
         print($this->data_dir . '/prompts/');
-        
+
         die;
-        foreach($prompts as $prompt) {
+        foreach ($prompts as $prompt) {
             print("gpt " . $prompt['name'] . PHP_EOL);
         }
     }
