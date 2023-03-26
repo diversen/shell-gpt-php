@@ -135,7 +135,6 @@ class OpenAiApi
         $first_content = false;
 
         try {
-            $endpoint = $this->base_path . $endpoint;
             $this->openAiStream($endpoint, $params, function ($json) use (&$complete_response, &$tokens_answer, &$first_content) {
                 $content = $json['choices'][0]['text'] ?? '';
                 if (!empty(trim($content))) {
@@ -170,7 +169,6 @@ class OpenAiApi
         $complete_response = '';
 
         try {
-            $endpoint = $this->base_path . $endpoint;
             $this->openAiStream($endpoint, $params, function ($json) use (&$complete_response, &$tokens_answer) {
                 $content = $json['choices'][0]['delta']['content'] ?? '';
                 $complete_response .= $content;
@@ -189,9 +187,10 @@ class OpenAiApi
         return $result;
     }
 
-    private function openAiStream(string $endpoint, array $params, callable $callback)
+    public function openAiStream(string $endpoint, array $params, callable $callback)
     {
 
+        $endpoint = $this->base_path . $endpoint;
         $params['stream'] = true;
 
         $headers = array();

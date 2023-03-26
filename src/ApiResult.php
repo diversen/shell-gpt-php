@@ -7,25 +7,25 @@ class ApiResult
 
     public string $tokens_used = '0';
     public string $content = '';
-    public array $result;
+    public array $array;
     public int $error_code = 0;
     public string $error_message = '';
 
     public function setResult(string $json)
     {
-        $this->result = json_decode($json, true);
+        $this->array = json_decode($json, true);
     }
 
     public function setCompletions()
     {
-        $this->tokens_used = $this->result["usage"]["total_tokens"] ?? '0';
-        $this->content = trim($this->result["choices"][0]["text"]);
+        $this->tokens_used = $this->array["usage"]["total_tokens"] ?? '0';
+        $this->content = trim($this->array["choices"][0]["text"]);
     }
 
     public function setChatCompletions()
     {
-        $this->tokens_used = $this->result["usage"]["total_tokens"];
-        $this->content = trim($this->result["choices"][0]["message"]["content"]);
+        $this->tokens_used = $this->array["usage"]["total_tokens"];
+        $this->content = trim($this->array["choices"][0]["message"]["content"]);
     }
 
     public function isError(): bool
