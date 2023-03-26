@@ -66,26 +66,6 @@ if ($result->isError()) {
 echo $result->content . PHP_EOL;
 
 #
-# /chat/completion (streaming)
-# 
-
-$params = array (
-    'model' => 'gpt-3.5-turbo',
-    'max_tokens' => 2048,
-    'temperature' => 0,
-    'n' => 1,
-    'stream' => true,
-    'messages' => 
-    array (
-      0 => 
-      array (
-        'role' => 'user',
-        'content' => 'say "Hello world!" and nothing more',
-      ),
-    ),
-);
-
-#
 # /completions (streaming)
 # 
 
