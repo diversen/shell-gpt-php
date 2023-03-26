@@ -12,6 +12,8 @@ sudo chmod +x /usr/local/bin/shgpt
 
 [Or build it yourself](docs/BUILD.md)
 
+[Or develop your own commands](docs/DEVELOP.md)
+
 ## Set key
 
 Set (or change) API key
