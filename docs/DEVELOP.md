@@ -9,4 +9,4 @@ Run it:
     ./bin/shgpt
 
 It is very simple to make a command: 
-Look at e.g. src/Code.php
+Look at e.g. [src/Code.php](../src/Code.php) 
