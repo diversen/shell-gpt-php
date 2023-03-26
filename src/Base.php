@@ -135,7 +135,7 @@ class Base
     {
 
         $openai_api = $this->getOpenApi();
-        $result = $openai_api->getCompletions('/completions', $params);
+        $result = $openai_api->getCompletions($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
     }
@@ -144,7 +144,7 @@ class Base
     {
 
         $openai_api = $this->getOpenApi();
-        $result = $openai_api->getCompletionsStream('/completions', $params);
+        $result = $openai_api->getCompletionsStream($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
     }
@@ -152,7 +152,7 @@ class Base
     public function getChatCompletions(array $params): ApiResult
     {
         $openai_api = $this->getOpenApi();
-        $result = $openai_api->getChatCompletions('/chat/completions', $params);
+        $result = $openai_api->getChatCompletions($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
     }
@@ -160,7 +160,7 @@ class Base
     public function getChatCompletionsStream(array $params): ApiResult
     {
         $openai_api = $this->getOpenApi();
-        $result = $openai_api->getChatCompletionsStream('/chat/completions', $params);
+        $result = $openai_api->getChatCompletionsStream($params);
         $this->logTokensUsed($result->tokens_used);
         return $result;
     }

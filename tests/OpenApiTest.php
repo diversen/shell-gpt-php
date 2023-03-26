@@ -25,7 +25,7 @@ final class OpenApiTest extends TestCase
         $api = new OpenAiApi($api_key);
 
         // completions
-        $result = $api->getCompletions('/completions', $params);
+        $result = $api->getCompletions($params);
         $this->assertInstanceOf(ApiResult::class, $result);
         $this->assertEquals('Hello world!', $result->content);
         $this->assertLessThan(100, (int)$result->tokens_used);
@@ -55,7 +55,7 @@ final class OpenApiTest extends TestCase
         $api = new OpenAiApi($api_key);
 
         // Chat completions
-        $result = $api->getChatCompletions('/chat/completions', $params);
+        $result = $api->getChatCompletions($params);
         $this->assertInstanceOf(ApiResult::class, $result);
         $this->assertEquals('Hello world!', $result->content);
         $this->assertLessThan(100, (int)$result->tokens_used);
@@ -84,7 +84,7 @@ final class OpenApiTest extends TestCase
         $api = new OpenAiApi($api_key);   
 
         ob_start();
-        $result = $api->getChatCompletionsStream('/chat/completions', $params);
+        $result = $api->getChatCompletionsStream($params);
         $this->assertInstanceOf(ApiResult::class, $result);
         $this->assertEquals('Hello world!', $result->content);
         $this->assertLessThan(100, (int)$result->tokens_used);

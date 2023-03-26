@@ -14,10 +14,6 @@ class Dialog extends Base
         'exit' => 'Exit the dialog',
         'comm' => 'Show all commands',
     ];
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function getCommand()
     {

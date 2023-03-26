@@ -7,11 +7,6 @@ use \Diversen\GPT\Base;
 class Key extends Base
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function getCommand()
     {
         return [

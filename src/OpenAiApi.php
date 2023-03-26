@@ -85,8 +85,9 @@ class OpenAiApi
         return "API ERROR: " . $result["error"]["message"];
     }
 
-    public function getCompletions(string $endpoint, array $params): ApiResult
+    public function getCompletions(array $params): ApiResult
     {
+        $endpoint = '/completions';
         $api_result = new ApiResult();
 
         try {
@@ -104,8 +105,9 @@ class OpenAiApi
         return $api_result;
     }
 
-    public function getChatCompletions(string $endpoint, array $params): ApiResult
+    public function getChatCompletions(array $params): ApiResult
     {
+        $endpoint = '/chat/completions';
         $api_result = new ApiResult();
 
         try {
@@ -122,8 +124,9 @@ class OpenAiApi
         return $api_result;
     }
 
-    public function getCompletionsStream(string $endpoint, array $params): ApiResult
+    public function getCompletionsStream(array $params): ApiResult
     {
+        $endpoint = '/completions';
         $result = new ApiResult();
 
         $tokens_prompt = Tokens::estimate(json_encode($params['prompt']), 'max');
@@ -157,8 +160,9 @@ class OpenAiApi
         return $result;
     }
 
-    public function getChatCompletionsStream(string $endpoint, array $params): ApiResult
+    public function getChatCompletionsStream(array $params): ApiResult
     {
+        $endpoint = '/chat/completions';
         $result = new ApiResult();
 
         $tokens_messages = Tokens::estimate(json_encode($params['messages']), 'max');
