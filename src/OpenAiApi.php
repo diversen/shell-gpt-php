@@ -11,7 +11,7 @@ class OpenAiApi
 
     private string $base_path = 'https://api.openai.com/v1';
     private string $api_key = '';
-    private float $timeout = 2;
+    private float $timeout = 4;
     private int $stream_sleep = 100000;
 
     /**
@@ -19,7 +19,7 @@ class OpenAiApi
      * @param int $timeout request timeout in seconds
      * @param int $stream_sleep sleep time in seconds between stream reads
      */
-    public function __construct(string $api_key, float $timeout = 2, float $stream_sleep = 0.1)
+    public function __construct(string $api_key, float $timeout = 4, float $stream_sleep = 0.1)
     {
         $this->api_key = $api_key;
         $this->timeout = $timeout;
@@ -30,13 +30,15 @@ class OpenAiApi
     private function parseHeaders($headers)
     {
         $head = array();
-        foreach ($headers as $k => $v) {
-            $t = explode(':', $v, 2);
-            if (isset($t[1]))
-                $head[trim($t[0])] = trim($t[1]);
+        foreach ($headers as $key => $header) {
+            $key_value = explode(':', $header, 2);
+            if (isset($key_value[1]))
+                $head[trim($key_value[0])] = trim($key_value[1]);
             else {
-                $head[] = $v;
-                if (preg_match("#HTTP/[0-9\.]+\s+([0-9]+)#", $v, $out))
+                // HTTP/1.1 200 OK 
+                // This is the only case where a header will not have a key
+                $head[] = $header;
+                if (preg_match("#HTTP/[0-9\.]+\s+([0-9]+)#", $header, $out))
                     $head['response_code'] = intval($out[1]);
             }
         }
@@ -64,7 +66,7 @@ class OpenAiApi
         try {
             $stream = fopen($endpoint, 'r', false, $context);
         } catch (Throwable $e) {
-            throw new Exception("Could not read from API endpoint.", 500);
+            throw new Exception($e->getMessage(), 500);
         }
 
         $result = stream_get_contents($stream);
@@ -83,12 +85,12 @@ class OpenAiApi
         return "API ERROR: " . $result["error"]["message"];
     }
 
-    public function getCompletions(array $params): ApiResult
+    public function getCompletions(string $endpoint, array $params): ApiResult
     {
         $api_result = new ApiResult();
 
         try {
-            $endpoint = $this->base_path . '/completions';
+            $endpoint = $this->base_path . $endpoint;
             $result = $this->openAiRequest($endpoint, $params);
 
             $api_result->setResult($result);
@@ -96,63 +98,97 @@ class OpenAiApi
         } catch (Throwable $e) {
 
             $api_result->error_code = $e->getCode();
-            $api_result->content = $e->getMessage();
+            $api_result->error_message = $e->getMessage();
         }
 
         return $api_result;
     }
 
-    public function getChatCompletions(array $params): ApiResult
+    public function getChatCompletions(string $endpoint, array $params): ApiResult
     {
         $api_result = new ApiResult();
 
         try {
-            $endpoint = $this->base_path . '/chat/completions';
+            $endpoint = $this->base_path . $endpoint;
             $result = $this->openAiRequest($endpoint, $params);
 
             $api_result->setResult($result);
             $api_result->setChatCompletions();
         } catch (Throwable $e) {
             $api_result->error_code = $e->getCode();
-            $api_result->content = $e->getMessage();
+            $api_result->error_message = $e->getMessage();
         }
 
         return $api_result;
     }
 
-    public function getChatCompletionsStream(array $params): ApiResult
+    public function getCompletionsStream(string $endpoint,array $params): ApiResult
     {
         $result = new ApiResult();
 
-        $tokens = Tokens::estimate(json_encode($params['messages']), 'max');
+        $tokens_prompt = Tokens::estimate(json_encode($params['prompt']), 'max');
+        $tokens_answer = 0;
         $complete_response = '';
+        $first_content = false;
 
         try {
-            $endpoint = $this->base_path . '/chat/completions';
-            $this->openAiStream($endpoint, $params, function ($content) use (&$complete_response) {
-                $complete_response .= $content;
-                echo $content;
+            $endpoint = $this->base_path . $endpoint;
+            $this->openAiStream($endpoint, $params, function ($json) use (&$complete_response, &$tokens_answer, &$first_content) {
+                $content = $json['choices'][0]['text'] ?? '';
+                if (!empty(trim($content))) {
+                    $first_content = true;
+                    
+                }
+                if ($first_content) {
+                    $complete_response .= $content;
+                    echo $content;
+                }
+
+                $tokens_answer += 1;
+               
             });
         } catch (Throwable $e) {
-            $result->content = $e->getMessage();
+            $result->error_message = $e->getMessage();
             $result->error_code = $e->getCode();
             return $result;
         }
 
-        $assistant = ['role' => 'assistant', 'text' => $complete_response];
-        $json_assistant = json_encode($assistant, true);
-        $tokens += Tokens::estimate($json_assistant, 'max');
+        $result->content = $complete_response;
+        $result->tokens_used = $tokens_prompt + $tokens_answer;
+
+        return $result;
+    }
+
+    public function getChatCompletionsStream(string $endpoint,array $params): ApiResult
+    {
+        $result = new ApiResult();
+
+        $tokens_messages = Tokens::estimate(json_encode($params['messages']), 'max');
+        $tokens_answer = 0;
+        $complete_response = '';
+
+        try {
+            $endpoint = $this->base_path . $endpoint;
+            $this->openAiStream($endpoint, $params, function ($json) use (&$complete_response, &$tokens_answer) {
+                $content = $json['choices'][0]['delta']['content'] ?? '';
+                $complete_response .= $content;
+                $tokens_answer += 1;
+                echo $content;
+            });
+        } catch (Throwable $e) {
+            $result->error_message = $e->getMessage();
+            $result->error_code = $e->getCode();
+            return $result;
+        }
 
         $result->content = $complete_response;
-        $result->tokens_used = $tokens;
+        $result->tokens_used = $tokens_messages + $tokens_answer;
 
         return $result;
     }
 
     private function openAiStream(string $endpoint, array $params, callable $callback)
     {
-
-        
 
         $params['stream'] = true;
 
@@ -194,9 +230,7 @@ class OpenAiApi
             }
 
             $json = json_decode($json_str, true);
-            $content = $json['choices'][0]['delta']['content'] ?? '';
-
-            $callback($content);
+            $callback($json);
             $finish_reason = $json['finish_reason'] ?? '';
             if ($finish_reason) {
                 fclose($stream);

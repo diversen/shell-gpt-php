@@ -20,11 +20,11 @@ use Diversen\MinimalCli;
 use Diversen\GPT\Shell;
 use Diversen\GPT\Code;
 use Diversen\GPT\Dialog;
+use Diversen\GPT\Question;
 use Diversen\GPT\Usage;
 use Diversen\GPT\Key;
 use Diversen\GPT\Params;
-use Diversen\GPT\Question;
-
+// use Diversen\GPT\Prompts;
 
 $minimal_cli = new MinimalCli();
 $minimal_cli->header = "shgpt (Shell GTP for PHP - v2.0.1)";
@@ -35,4 +35,5 @@ $minimal_cli->addCommandClass('question', Question::class);
 $minimal_cli->addCommandClass('usage', Usage::class);
 $minimal_cli->addCommandClass('key', Key::class);
 $minimal_cli->addCommandClass('params', Params::class);
+// $minimal_cli->addCommandClass('prompts', Prompts::class);
 $minimal_cli->runMain();

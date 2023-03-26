@@ -37,13 +37,14 @@ class Code extends Base
         $params['prompt'] = $prompt;
         $params['model'] = 'text-davinci-003';
 
-        $result = $this->getCompletions($params);
-        $text = $result->content;
-
-        print($text . PHP_EOL);
+        $result = $this->getCompletionsStream($params);
         
         if ($result->isError()) {
+            echo $result->error_message . PHP_EOL;
             return 1;
         }
+
+        echo PHP_EOL;
+        return 0;
     }
 }

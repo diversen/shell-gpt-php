@@ -9,6 +9,7 @@ class ApiResult
     public string $content = '';
     public array $result;
     public int $error_code = 0;
+    public string $error_message = '';
 
     public function setResult(string $json)
     {

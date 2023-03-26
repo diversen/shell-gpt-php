@@ -41,19 +41,21 @@ class Shell extends Base
         $params['prompt'] = $prompt;
         $params['model'] = 'text-davinci-003';
 
-        $result = $this->getCompletions($params);
-        $text = $result->content;
-
-        if ($parse_argv->getOption('execute')) {
-            if ($this->utils->readlineConfirm("Execute command: " . $text . " ?")) {
-                passthru($text);
-            }
-        } else {
-            echo $text . PHP_EOL;
-        }
-
+        $result = $this->getCompletionsStream($params);
+        
         if ($result->isError()) {
+            echo $result->error_message . PHP_EOL;
             return 1;
         }
+
+        echo PHP_EOL;
+
+        if ($parse_argv->getOption('execute')) {
+            if ($this->utils->readlineConfirm("Execute, are you sure?")) {
+                passthru($result->content);
+            }
+        }
+        
+        return 0;
     }
 }
