@@ -2,17 +2,20 @@
 
 ## Installation
 
-Download the latest release (it is always here):
+Download the latest release:
 
 ```bash
 wget https://10kilobyte.com/shgpt/shgpt.phar
 sudo cp -f shgpt.phar /usr/local/bin/shgpt
+rm shgpt.phar
 sudo chmod +x /usr/local/bin/shgpt
 ```
 
-[Or build it yourself](docs/BUILD.md)
+[You may also build it yourself](docs/BUILD.md)
 
-[Or develop your own commands](docs/DEVELOP.md)
+[Develop your own commands](docs/DEVELOP.md)
+
+[Or use it as a tiny GPT API](docs/API.md)
 
 ## Set key
 
