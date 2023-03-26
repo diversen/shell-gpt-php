@@ -1,6 +1,6 @@
 # shell-gpt-php
 
-![](src/gpt.png)
+![](img/gpt.png)
 
 ## Installation
 
