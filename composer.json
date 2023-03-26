@@ -1,6 +1,7 @@
 {
     "name": "diversen/shell-gpt-php",
-    "description": "Using the GPT engine to generate code, system commands, or chat",
+    "description": "Using shell-gpt-php to generate code, system commands, or chat. Easy to extend. ",
+    "keywords": ["php", "shell", "openai", "sdk", "codex", "GPT-3", "api", "client", "natural", "language", "processing"],
     "license": "MIT",
     "autoload": {
         "psr-4": {
