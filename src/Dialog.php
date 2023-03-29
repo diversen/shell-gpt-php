@@ -126,10 +126,12 @@ class Dialog extends Base
 
             $message = $this->utils->readSingleline('You: ');
 
-            // Check if $message is a command
-            if (in_array(trim($message), $command_names)) {
+            $message = trim($message);
 
-                $command = trim($message);
+            // Check if $message is a command
+            if (in_array($message, $command_names)) {
+
+                $command = $message;
 
                 // exit on 0
                 // continue on 1

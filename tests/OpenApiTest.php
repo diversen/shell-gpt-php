@@ -17,7 +17,7 @@ final class OpenApiTest extends TestCase
             'temperature' => 0,
             'n' => 1,
             // 'stream' => false,
-            'prompt' => 'Only say "Hello world!"',
+            'prompt' => 'Say "Hello world!" and nothing more',
         );
 
         $base = new Base();
