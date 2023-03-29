@@ -129,7 +129,7 @@ class Dialog extends Base
             // Check if $message is a command
             if (in_array(trim($message), $command_names)) {
 
-                $command = $message;
+                $command = trim($message);
 
                 // exit on 0
                 // continue on 1
