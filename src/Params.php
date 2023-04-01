@@ -45,7 +45,7 @@ class Params extends Base
 
             $value = $this->utils->readSingleline("Set $key [current: $option] to: ");
             if (!$value) {
-                $params[$key] = $this->default_options[$key];
+                $params[$key] = $option;
             } else {
                 $params[$key] = $value;
             }
