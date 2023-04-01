@@ -188,7 +188,7 @@ class Base
             file_put_contents($file, '');
         }
 
-        $content = time() . "," . $tokens . PHP_EOL;
+        $content = time() . "," . (string)$tokens . PHP_EOL;
         file_put_contents($file, $content, FILE_APPEND);
     }
 }
