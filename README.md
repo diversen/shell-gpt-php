@@ -13,7 +13,6 @@ sudo chmod +x /usr/local/bin/shgpt
 
 * You may also [build it yourself](docs/BUILD.md) 
 * Develop [commands](docs/DEVELOP.md)
-* Or use it as a [tiny GPT API](docs/API.php)
 
 ## Set key
 
