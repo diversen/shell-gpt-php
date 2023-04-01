@@ -165,8 +165,9 @@ class Base
         return $result;
     }
 
-    public function getTokensUsedLine(string $tokens)
+    public function getTokensUsedLine(int $tokens)
     {
+        $tokens = (string)$tokens;
         return " (tokens used: $tokens) ";
     }
 
@@ -180,7 +181,7 @@ class Base
         return $prompt;
     }
 
-    private function logTokensUsed(string $tokens)
+    private function logTokensUsed(int $tokens)
     {
         $file = $this->base_dir . '/tokens_used.txt';
 
