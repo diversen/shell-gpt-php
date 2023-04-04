@@ -158,6 +158,8 @@ class Dialog extends Base
                 'role' => 'user', 'content' => $message,
             ];
 
+            print(PHP_EOL);
+            print("Assistant: ");
 
             $result = $this->getChatCompletionsStream($params);
             if ($result->isError()) {
@@ -167,8 +169,7 @@ class Dialog extends Base
                 continue;
             }
 
-            print(PHP_EOL);
-            print("Assistant: ");
+            
 
             $content = $result->content;
             $tokens = $result->tokens_used;
