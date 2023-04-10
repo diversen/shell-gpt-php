@@ -169,8 +169,6 @@ class Dialog extends Base
                 continue;
             }
 
-            
-
             $content = $result->content;
             $tokens = $result->tokens_used;
             print($this->getTokensUsedLine($tokens));

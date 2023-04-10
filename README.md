@@ -5,10 +5,10 @@
 Download the latest release:
 
 ```bash
-wget https://10kilobyte.com/shgpt/shgpt.phar
+wget https://www.10kilobyte.com/shgpt/shgpt.phar
 sudo cp -f shgpt.phar /usr/local/bin/shgpt
-rm shgpt.phar
 sudo chmod +x /usr/local/bin/shgpt
+rm shgpt.phar
 ```
 
 * You may also [build it yourself](docs/BUILD.md) 
