@@ -14,7 +14,7 @@ class Dialog extends Base
     private array $commands = [
         'save' => 'Save dialog to file',
         'exec' => 'Execute a command and feed the output to the dialog',
-        'exit' => 'Exit the dialog',
+        'exit' => 'Exit the dialog. Dialog will be saved to file',
         'comm' => 'Show all commands',
         'clear' => 'Clear the dialog and start over',
     ];
@@ -27,8 +27,9 @@ class Dialog extends Base
         ];
     }
 
-    private function exit()
+    private function exit(array $params)
     {
+        $this->saveMessages($params);
         return 0;
     }
 
@@ -46,13 +47,17 @@ class Dialog extends Base
     private function save(array &$params = [])
     {
 
-        $content = $this->getSaveString($params);
-        $file = $this->utils->readSingleline('File: ');
-        if (empty($file)) {
-            $file = 'no-title.txt';
+        $this->saveMessages($params);
+        if (!empty($params["messages"])) {
+            $content = $this->getSaveString($params);
+            $file = $this->utils->readSingleline('File: ');
+            if (empty($file)) {
+                $file = 'no-title.txt';
+            }
+            file_put_contents($file, $content);
+            print('Dialog saved as plain text to: ' . $file . PHP_EOL);
         }
-        file_put_contents($file, $content);
-        print('Dialog saved as plain text to: ' . $file . PHP_EOL);
+
         return 0;
     }
 
@@ -95,8 +100,12 @@ class Dialog extends Base
         $this->runCommandStream($parse_argv);
     }
 
-    public function saveMessages($params)
+    private function saveMessages($params)
     {
+        if (empty($params['messages'])) {
+            return 1;
+        }
+
         $date = date('Y-m-d_H-i-s');
         $file = $this->data_dir . '/dialog_' . $date . '.json';
         try {
@@ -111,8 +120,10 @@ class Dialog extends Base
     public function clear(&$params)
     {
         $this->saveMessages($params);
+        if (!empty($params["messages"])) {
+            print('Previous messages has been cleared.' . PHP_EOL);
+        }
         $params['messages'] = [];
-        print('Previous messages has been cleared.' . PHP_EOL);
         return 1;
     }
 
@@ -155,7 +166,7 @@ class Dialog extends Base
                     // save dialog to data dir as json file
                     // Make a good name for a log file
                     // Get yyyy-mm-dd_hh-mm-ss
-                    $this->saveMessages($params);
+                    // $this->saveMessages($params);
 
                     return 0;
                 }
