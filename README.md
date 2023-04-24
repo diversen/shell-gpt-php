@@ -34,10 +34,11 @@ Some sub commands are available in the dialog mode:
 
     Available commands: 
 
-    save - Save dialog to file
-    exec - Execute a command and feed the output to the dialog
-    exit - Exit the dialog (or ctrl-c)
-    comm - Show all commands
+    save  - Save dialog to file
+    exec  - Execute a command and feed the output to the dialog
+    exit  - Exit the dialog
+    comm  - Show all commands
+    clear - Clear the dialog and start over
 
     Type a message to ChatGPT. Maybe 'hello world!' You may also use above commands.
 
