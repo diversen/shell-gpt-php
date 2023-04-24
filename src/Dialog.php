@@ -3,16 +3,20 @@
 namespace Diversen\GPT;
 
 use Diversen\GPT\Base;
+use Diversen\ParseArgv;
 use Throwable;
 
 class Dialog extends Base
 {
+
+    private ?ParseArgv $parse_argv = null;
 
     private array $commands = [
         'save' => 'Save dialog to file',
         'exec' => 'Execute a command and feed the output to the dialog',
         'exit' => 'Exit the dialog',
         'comm' => 'Show all commands',
+        'clear' => 'Clear the dialog and start over',
     ];
 
     public function getCommand()
@@ -85,6 +89,7 @@ class Dialog extends Base
 
     public function runCommand(\Diversen\ParseArgv $parse_argv)
     {
+        $this->parse_argv = $parse_argv;
         $this->runCommandStream($parse_argv);
     }
 
@@ -99,6 +104,15 @@ class Dialog extends Base
             print($e->getMessage() . PHP_EOL);
             return 1;
         }
+    }
+
+    public function clear(&$params)
+    {
+        $this->saveMessages($params);
+        $params['messages'] = [];
+        print('Previous messages has been cleared.' . PHP_EOL);
+        return 1;
+
     }
 
     public function runCommandStream(\Diversen\ParseArgv $parse_argv)
@@ -125,7 +139,6 @@ class Dialog extends Base
 
 
             $message = $this->utils->readSingleline('You: ');
-
             $message = trim($message);
 
             // Check if $message is a command
