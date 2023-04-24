@@ -112,7 +112,6 @@ class Dialog extends Base
         $params['messages'] = [];
         print('Previous messages has been cleared.' . PHP_EOL);
         return 1;
-
     }
 
     public function runCommandStream(\Diversen\ParseArgv $parse_argv)
