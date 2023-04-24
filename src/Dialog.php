@@ -80,7 +80,9 @@ class Dialog extends Base
 
         $command_help = 'Available commands: ' . PHP_EOL . PHP_EOL;
         foreach ($this->commands as $command => $help) {
-            $command_help .= $this->utils->colorOutput($command, 'notice') . ' - ' . $help . PHP_EOL;
+            $command_str = $this->utils->colorOutput($command, 'notice');
+            $command_str = str_pad($command_str, 14, ' ', STR_PAD_RIGHT);
+            $command_help .= $command_str . ' - ' . $help . PHP_EOL;
         }
         print ($command_help) . PHP_EOL;
         print("Type a message to ChatGPT. Maybe 'hello world!' You may also use above commands. " . PHP_EOL);
@@ -123,7 +125,6 @@ class Dialog extends Base
 
         $this->comm();
         $command_names = array_keys($this->commands);
-
 
         while (true) {
 
