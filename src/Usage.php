@@ -73,7 +73,8 @@ class Usage extends Base
             return 0;
         }
         foreach ($usage as $key => $value) {
-            echo $key . ': ' . $value . PHP_EOL;
+            $key = str_pad($key . ": ", 15, ' ', STR_PAD_RIGHT);
+            echo $key . $value . PHP_EOL;
         }
 
         return 0;

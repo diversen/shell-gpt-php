@@ -173,11 +173,18 @@ class Base
 
     public function getPromptArgument(\Diversen\ParseArgv $parse_argv)
     {
+        
         if (!$parse_argv->getArgument(0)) {
             return false;
         }
 
         $prompt = trim(implode(" ", $parse_argv->arguments));
+        
+        $stdin = $this->utils->readStdin();
+        if($stdin) {
+            $prompt = $stdin . PHP_EOL . PHP_EOL . $prompt;
+        }
+        
         return $prompt;
     }
 
