@@ -1,6 +1,6 @@
 # shell-gpt-php
 
-    cat README.md | ./bin/shgpt q "Summerize the above README in the style of Shakespeare"
+    cat README.md | shgpt q "Summerize the above README in the style of Shakespeare"
 
 Greeting all, 'tis time to install mine shell-gpt-php. 'Tis a wondrous treasure that can assist with thy questions and commands, thine need only download the latest release, execute thine commands, and away we go! Set thy key for the dilaog, or 'tis time to pipe thy content in and generate shell command with or one line python program. Ask a question, or show token usage from thy last ninety days, 'tis all here! Tis a goodly thing all said, so depart thou now, and enjoy thine shell-gpt-php.
 
