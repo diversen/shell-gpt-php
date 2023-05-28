@@ -23,7 +23,14 @@ class Export extends Base {
         // Read all files from data dir
         $files = scandir($this->data_dir);
         foreach ($files as $file) {
-            if (in_array($file, ['.', '..'])) {
+
+            // Skip . and ..
+            if (in_array($file, ['.', '..']) ) {
+                continue;
+            }
+
+            // Skip directories
+            if (is_dir($this->data_dir . "/$file")) {
                 continue;
             }
 
@@ -33,6 +40,9 @@ class Export extends Base {
             
             $text_str = $this->getDialogAsTxt($json);
             $filename = basename($path);
+        
+            // Remove file ending .json
+            $filename = substr($filename, 0, -5);
             file_put_contents($dir . '/' . $filename . '.md', $text_str);
         }
     }
