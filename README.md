@@ -107,6 +107,12 @@ Last 24 hours, last 7 days, last 30 days and last 90 days.
 
     shgpt usage
 
+### Export
+
+Export all dialogs as markdown: 
+
+    shgpt export some_dir
+
 ## License
 
 MIT © [Dennis Iversen](https://github.com/diversen)
