@@ -24,6 +24,7 @@ use Diversen\GPT\Question;
 use Diversen\GPT\Usage;
 use Diversen\GPT\Key;
 use Diversen\GPT\Params;
+use Diversen\GPT\Export;
 // use Diversen\GPT\Prompts;
 
 $minimal_cli = new MinimalCli();
@@ -35,5 +36,6 @@ $minimal_cli->addCommandClass('question', Question::class);
 $minimal_cli->addCommandClass('usage', Usage::class);
 $minimal_cli->addCommandClass('key', Key::class);
 $minimal_cli->addCommandClass('params', Params::class);
+$minimal_cli->addCommandClass('export', Export::class);
 // $minimal_cli->addCommandClass('prompts', Prompts::class);
 $minimal_cli->runMain();

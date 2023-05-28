@@ -33,23 +33,12 @@ class Dialog extends Base
         return 0;
     }
 
-    private function getSaveString(array $params = [])
-    {
-        $dialog = '';
-        foreach ($params['messages'] as $message) {
-            $role = $message['role'];
-            $content = $message['content'];
-            $dialog .=  ucfirst($role) . ': ' . $content . PHP_EOL . PHP_EOL;
-        }
-        return $dialog;
-    }
-
     private function save(array &$params = [])
     {
 
         $this->saveMessages($params);
         if (!empty($params["messages"])) {
-            $content = $this->getSaveString($params);
+            $content = $this->getDialogAsTxt($params["messages"]);
             $file = $this->utils->readSingleline('File: ');
             if (empty($file)) {
                 $file = 'no-title.txt';

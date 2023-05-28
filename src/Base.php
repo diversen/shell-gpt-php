@@ -199,4 +199,15 @@ class Base
         $content = time() . "," . (string)$tokens . PHP_EOL;
         file_put_contents($file, $content, FILE_APPEND);
     }
+
+    public function getDialogAsTxt(array $messages)
+    {
+        $dialog = '';
+        foreach ($messages as $message) {
+            $role = $message['role'];
+            $content = $message['content'];
+            $dialog .=  ucfirst($role) . ': ' . $content . PHP_EOL . PHP_EOL;
+        }
+        return $dialog;
+    }
 }
