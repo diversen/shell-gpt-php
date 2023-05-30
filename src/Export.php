@@ -11,7 +11,7 @@ class Export extends Base {
     public function getCommand()
     {
         return [
-            'usage' => 'Export everything as markdown to a single directory.',
+            'usage' => 'Export everything as markdown to a single directory',
             'arguments' => [
                 'Dir' => 'The directory to export to.',
             ]
