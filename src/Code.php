@@ -27,7 +27,7 @@ class Code extends Base
             return 10;
         }
 
-        $prompt .= '. Provide only code as output.';
+        $prompt .= '. Provide only code as output and nothing else. Output should be code that can be copy pasted into an editor and used.';
         $params['prompt'] = $prompt;
         $params['model'] = 'gpt-3.5-turbo-instruct';
 

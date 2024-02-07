@@ -32,7 +32,7 @@ class Shell extends Base
         }
 
         $shell = getenv('SHELL') ?? 'unknown';
-        $prompt .= ". Provide only shell code as output. Current shell is: $shell";
+        $prompt .= ". Only provide only shell code as output and nothing else. Only output code that can be executed. Current shell is: $shell";
         $params['prompt'] = $prompt;
         $params['model'] = 'gpt-3.5-turbo-instruct';
 
