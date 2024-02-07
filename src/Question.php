@@ -28,7 +28,7 @@ class Question extends Base
             return 10;
         }
         $params['prompt'] = $prompt;
-        $params['model'] = 'text-davinci-003';
+        $params['model'] = 'gpt-3.5-turbo';
 
         $result = $this->getCompletionsStream($params);
         
