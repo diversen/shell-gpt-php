@@ -13,7 +13,6 @@ class Shell extends Base
             'usage' => 'Command to generate shell commands',
             'options' => [
                 ...$this->base_options,
-                '--execute' => 'Execute the command.'
             ],
             'arguments' => [
                 'Prompt' => 'The prompt to generate completions for.',
@@ -32,8 +31,12 @@ class Shell extends Base
         }
 
         $shell = getenv('SHELL') ?? 'unknown';
-        $prompt .= ". Only provide only shell code as output and nothing else. Only output code that can be executed. Current shell is: $shell";
-        $params['prompt'] = $prompt;
+        $final_prompt = <<<EOF
+You are using the $shell shell.
+Make a shell command that will: $prompt
+EOF;
+
+        $params['prompt'] = $final_prompt;
         $params['model'] = 'gpt-3.5-turbo-instruct';
 
         $result = $this->getCompletionsStream($params);
@@ -44,12 +47,6 @@ class Shell extends Base
         }
 
         echo PHP_EOL;
-
-        if ($parse_argv->getOption('execute')) {
-            if ($this->utils->readlineConfirm("Execute, are you sure?")) {
-                passthru($result->content);
-            }
-        }
 
         return 0;
     }
