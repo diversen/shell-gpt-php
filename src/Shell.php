@@ -34,7 +34,7 @@ class Shell extends Base
         $shell = getenv('SHELL') ?? 'unknown';
         $prompt .= ". Provide only shell code as output. Current shell is: $shell";
         $params['prompt'] = $prompt;
-        $params['model'] = 'gpt-3.5-turbo';
+        $params['model'] = 'gpt-3.5-turbo-instruct';
 
         $result = $this->getCompletionsStream($params);
 

@@ -29,7 +29,7 @@ class Code extends Base
 
         $prompt .= '. Provide only code as output.';
         $params['prompt'] = $prompt;
-        $params['model'] = 'gpt-3.5-turbo';
+        $params['model'] = 'gpt-3.5-turbo-instruct';
 
         $result = $this->getCompletionsStream($params);
 
